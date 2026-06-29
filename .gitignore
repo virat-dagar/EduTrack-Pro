@@ -1,17 +1,32 @@
 # Python
 backend/.venv/
+backend/venv/
+venv/
+.venv/
 backend/__pycache__/
+__pycache__/
 *.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.ruff_cache/
 
 # Environment files
 backend/.env
+.env
 
 # Node
 frontend/node_modules/
 frontend/dist/
+node_modules/
+dist/
 
 # macOS
 .DS_Store
 
 # VS Code
 .vscode/
+
+# Logs
+*.log
+logs/

@@ -1,0 +1,1 @@
+"""Subject service skeleton."""
