@@ -34,6 +34,18 @@ chmod +x setup.sh
 uvicorn app.main:app --reload
 ```
 
+Optional local demo credentials:
+
+```bash
+cd backend
+.venv/bin/python -m app.database.seed
+```
+
+```text
+teacher@example.com / Password123
+student@example.com / Password123
+```
+
 Windows:
 
 ```bat

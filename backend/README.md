@@ -24,3 +24,16 @@ The setup script checks Python 3.11+, creates `venv`, installs dependencies, and
 ```bash
 uvicorn app.main:app --reload
 ```
+
+## Demo Data
+
+```bash
+.venv/bin/python -m app.database.seed
+```
+
+Demo credentials:
+
+```text
+teacher@example.com / Password123
+student@example.com / Password123
+```

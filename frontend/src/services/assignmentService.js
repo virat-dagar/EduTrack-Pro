@@ -1,0 +1,26 @@
+import api from "./api";
+import { compactParams } from "../utils/helpers";
+
+export const assignmentService = {
+  list(params) {
+    return api.get("/assignments", { params: compactParams(params) });
+  },
+  get(id) {
+    return api.get(`/assignments/${id}`);
+  },
+  create(payload) {
+    return api.post("/assignments", payload);
+  },
+  update(id, payload) {
+    return api.put(`/assignments/${id}`, payload);
+  },
+  remove(id) {
+    return api.delete(`/assignments/${id}`);
+  },
+  upcoming() {
+    return api.get("/assignments/upcoming");
+  },
+  overdue() {
+    return api.get("/assignments/overdue");
+  },
+};

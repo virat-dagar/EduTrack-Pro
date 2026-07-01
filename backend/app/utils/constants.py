@@ -1,0 +1,40 @@
+"""Shared backend constants."""
+
+ROLE_TEACHER = "teacher"
+ROLE_STUDENT = "student"
+USER_ROLES = {ROLE_TEACHER, ROLE_STUDENT}
+
+ATTENDANCE_PRESENT = "Present"
+ATTENDANCE_ABSENT = "Absent"
+ATTENDANCE_LATE = "Late"
+ATTENDANCE_STATUSES = {
+    ATTENDANCE_PRESENT,
+    ATTENDANCE_ABSENT,
+    ATTENDANCE_LATE,
+}
+
+ASSESSMENT_TYPES = {
+    "Assignment",
+    "Quiz",
+    "Internal",
+    "Mid Semester",
+    "Practical",
+    "End Semester",
+}
+
+SUBMISSION_PENDING = "Pending"
+SUBMISSION_SUBMITTED = "Submitted"
+SUBMISSION_LATE = "Late"
+SUBMISSION_REVIEWED = "Reviewed"
+SUBMISSION_STATUSES = {
+    SUBMISSION_PENDING,
+    SUBMISSION_SUBMITTED,
+    SUBMISSION_LATE,
+    SUBMISSION_REVIEWED,
+}
+
+GENDERS = {"Male", "Female", "Other"}
+
+DEFAULT_PAGE = 1
+DEFAULT_PAGE_SIZE = 20
+MAX_PAGE_SIZE = 100

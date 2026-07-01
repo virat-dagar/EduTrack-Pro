@@ -1,0 +1,8 @@
+EduTrack Pro Alembic migrations.
+
+Run from the backend directory:
+
+    alembic upgrade head
+
+The initial migration creates users, students, subjects, attendance, marks,
+assignments, and submissions with the constraints documented in the spec.
