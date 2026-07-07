@@ -6,9 +6,13 @@ from app.core.security import hash_password
 from app.database.init_db import create_database
 from app.database.database import SessionLocal
 from app.models.assignment import Assignment
+from app.models.assignment_question import AssignmentQuestion
+from app.models.classroom import Classroom
 from app.models.student import Student
 from app.models.subject import Subject
 from app.models.user import User
+from app.schemas.classroom import ClassroomCreate
+from app.services.classroom_service import ClassroomService
 
 
 def seed_demo_data() -> None:
@@ -44,9 +48,33 @@ def seed_demo_data() -> None:
             db.refresh(student_user)
 
         student = db.query(Student).filter(Student.user_id == student_user.id).first()
+        classroom = (
+            db.query(Classroom)
+            .filter(
+                Classroom.department == "Computer Science",
+                Classroom.course == "B.Tech",
+                Classroom.semester == 5,
+                Classroom.section == "A",
+                Classroom.academic_year == "2026-27",
+            )
+            .first()
+        )
+        if classroom is None:
+            classroom = ClassroomService.create_classroom(
+                db,
+                ClassroomCreate(
+                    department="Computer Science",
+                    course="B.Tech",
+                    semester=5,
+                    section="A",
+                    academic_year="2026-27",
+                ),
+            )
+
         if student is None:
             student = Student(
                 user_id=student_user.id,
+                classroom_id=classroom.id,
                 roll_number="CSE23001",
                 enrollment_number="2026CSE001",
                 first_name="Demo",
@@ -64,10 +92,13 @@ def seed_demo_data() -> None:
                 is_active=True,
             )
             db.add(student)
+        elif student.classroom_id is None:
+            student.classroom_id = classroom.id
 
         subject = db.query(Subject).filter(Subject.subject_code == "CS301").first()
         if subject is None:
             subject = Subject(
+                classroom_id=classroom.id,
                 subject_code="CS301",
                 subject_name="Database Management Systems",
                 course="B.Tech",
@@ -80,21 +111,30 @@ def seed_demo_data() -> None:
             db.add(subject)
             db.commit()
             db.refresh(subject)
+        elif subject.classroom_id is None:
+            subject.classroom_id = classroom.id
 
         assignment = db.query(Assignment).filter(Assignment.title == "Normalization Assignment").first()
         if assignment is None:
-            db.add(
-                Assignment(
-                    subject_id=subject.id,
-                    title="Normalization Assignment",
-                    description="Solve normalization exercises for the database design module.",
-                    total_marks=20,
-                    assigned_date=date.today(),
-                    due_date=date(date.today().year, 12, 31),
-                    created_by=teacher.id,
-                    is_active=True,
-                )
+            assignment = Assignment(
+                classroom_id=classroom.id,
+                subject_id=subject.id,
+                title="Normalization Assignment",
+                description="Solve normalization exercises for the database design module.",
+                pdf_file="/demo/normalization-assignment.pdf",
+                total_marks=20,
+                assigned_date=date.today(),
+                due_date=date(date.today().year, 12, 31),
+                created_by=teacher.id,
+                is_published=True,
+                is_active=True,
             )
+            assignment.questions = [
+                AssignmentQuestion(question_no=1, title="Normal Forms", max_marks=5),
+                AssignmentQuestion(question_no=2, title="Dependency Analysis", max_marks=5),
+                AssignmentQuestion(question_no=3, title="Schema Decomposition", max_marks=10),
+            ]
+            db.add(assignment)
         db.commit()
     finally:
         db.close()

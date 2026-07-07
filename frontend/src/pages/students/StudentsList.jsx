@@ -1,5 +1,8 @@
-import { Plus, Search } from "lucide-react";
+import { Download, Plus, Search, Upload } from "lucide-react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import { Button } from "../../components/common/Button";
 import { Input } from "../../components/common/Input";
 import { ErrorState } from "../../components/feedback/ErrorState";
 import { LoadingState } from "../../components/feedback/LoadingState";
@@ -10,6 +13,26 @@ import { studentService } from "../../services/studentService";
 
 export default function StudentsList() {
   const students = useApi(() => studentService.list({ page_size: 100 }), []);
+  const [isExporting, setIsExporting] = useState(false);
+
+  const handleExport = async () => {
+    setIsExporting(true);
+    try {
+      const blob = await studentService.exportStudents();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "students.csv";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      toast.error(error.message || "Unable to export students.");
+    } finally {
+      setIsExporting(false);
+    }
+  };
 
   if (students.isLoading) return <LoadingState label="Loading students" />;
   if (students.error) return <ErrorState message={students.error.message} />;
@@ -22,10 +45,17 @@ export default function StudentsList() {
         title="Students"
         description="Manage enrolled student profiles."
         actions={
-          <Link className="btn btn-primary btn-md" to="/students/create">
-            <Plus size={18} aria-hidden="true" />
-            <span>New Student</span>
-          </Link>
+          <>
+            <Link className="btn btn-primary btn-md" to="/students/create">
+              <Plus size={18} aria-hidden="true" />
+              <span>New Student</span>
+            </Link>
+            <Link className="btn btn-secondary btn-md" to="/students/import">
+              <Upload size={18} aria-hidden="true" />
+              <span>Import CSV/Excel</span>
+            </Link>
+            <Button variant="secondary" icon={Download} isLoading={isExporting} onClick={handleExport}>Export Students</Button>
+          </>
         }
       />
       <div className="toolbar">

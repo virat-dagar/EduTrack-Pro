@@ -11,6 +11,7 @@ from app.utils.validators import ensure_not_future
 class AttendanceCreate(BaseModel):
     """Create attendance request."""
 
+    classroom_id: int | None = None
     student_id: int
     subject_id: int
     attendance_date: date
@@ -51,6 +52,7 @@ class AttendanceResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
     id: int
+    classroom_id: int | None = None
     student_id: int
     subject_id: int
     attendance_date: date
@@ -85,3 +87,33 @@ class AttendanceListResponse(BaseModel):
     page_size: int
     total_items: int
     total_pages: int
+
+
+class AttendanceBulkItem(BaseModel):
+    """One row in a bulk attendance save request."""
+
+    student_id: int
+    status: str
+    remarks: str | None = None
+
+    @field_validator("status")
+    @classmethod
+    def validate_bulk_status(cls, value: str) -> str:
+        if value not in ATTENDANCE_STATUSES:
+            raise ValueError("Attendance status must be Present, Absent, or Late.")
+        return value
+
+
+class AttendanceBulkCreate(BaseModel):
+    """Bulk classroom attendance request."""
+
+    classroom_id: int
+    subject_id: int
+    attendance_date: date
+    records: list[AttendanceBulkItem]
+
+    @field_validator("attendance_date")
+    @classmethod
+    def validate_bulk_attendance_date(cls, value: date) -> date:
+        ensure_not_future(value, "Attendance date")
+        return value

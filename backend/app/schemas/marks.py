@@ -11,6 +11,7 @@ from app.utils.validators import ensure_not_future
 class MarksCreate(BaseModel):
     """Create marks request."""
 
+    classroom_id: int | None = None
     student_id: int
     subject_id: int
     assessment_type: str
@@ -63,6 +64,7 @@ class MarksResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
     id: int
+    classroom_id: int | None = None
     student_id: int
     subject_id: int
     assessment_type: str

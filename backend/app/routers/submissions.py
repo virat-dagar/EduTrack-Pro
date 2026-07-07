@@ -1,6 +1,6 @@
 """Submissions router."""
 
-from fastapi import APIRouter, Depends, Query, status
+from fastapi import APIRouter, Depends, File, Query, UploadFile, status
 from sqlalchemy.orm import Session
 
 from app.core.dependencies import get_current_user, require_student, require_teacher
@@ -58,6 +58,20 @@ def pending_reviews(
     """Return submissions awaiting review."""
 
     return success_response("", SubmissionService.pending_reviews(db))
+
+
+@router.post("/upload", status_code=status.HTTP_201_CREATED, summary="Upload submission file")
+def upload_submission_file(
+    file: UploadFile = File(...),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_student),
+) -> dict:
+    """Upload a solution file for a student submission."""
+
+    return success_response(
+        "Submission file uploaded successfully.",
+        SubmissionService.save_uploaded_file(db, file, current_user),
+    )
 
 
 @router.get("/student/{student_id}", summary="Student submissions")

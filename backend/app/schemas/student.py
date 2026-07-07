@@ -11,21 +11,22 @@ from app.utils.validators import ensure_not_future, normalize_email, normalize_t
 class StudentBase(BaseModel):
     """Shared student fields."""
 
-    user_id: int
+    user_id: int | None = None
+    classroom_id: int | None = None
     roll_number: str = Field(..., min_length=1, max_length=30)
-    enrollment_number: str = Field(..., min_length=1, max_length=50)
+    enrollment_number: str | None = Field(default=None, min_length=1, max_length=50)
     first_name: str = Field(..., min_length=1, max_length=50)
     last_name: str = Field(..., min_length=1, max_length=50)
-    date_of_birth: date
-    gender: str
+    date_of_birth: date = Field(default_factory=lambda: date(2000, 1, 1))
+    gender: str = "Other"
     email: EmailStr
-    phone: str
+    phone: str = "0000000000"
     course: str = Field(..., min_length=1, max_length=100)
     department: str = Field(..., min_length=1, max_length=100)
     semester: int = Field(..., ge=1)
     section: str | None = Field(default=None, max_length=10)
-    academic_year: str = Field(..., min_length=4, max_length=20)
-    admission_date: date
+    academic_year: str = Field(default="2026-27", min_length=4, max_length=20)
+    admission_date: date = Field(default_factory=date.today)
     profile_photo: str | None = Field(default=None, max_length=255)
     is_active: bool = True
 
@@ -82,6 +83,7 @@ class StudentUpdate(BaseModel):
     email: EmailStr | None = None
     phone: str | None = None
     course: str | None = Field(default=None, min_length=1, max_length=100)
+    classroom_id: int | None = None
     department: str | None = Field(default=None, min_length=1, max_length=100)
     semester: int | None = Field(default=None, ge=1)
     section: str | None = Field(default=None, max_length=10)
@@ -121,6 +123,7 @@ class StudentResponse(BaseModel):
 
     id: int
     user_id: int
+    classroom_id: int | None = None
     roll_number: str
     enrollment_number: str
     first_name: str
@@ -139,6 +142,7 @@ class StudentResponse(BaseModel):
     is_active: bool
     created_at: datetime | None = None
     updated_at: datetime | None = None
+    generated_credentials: dict[str, str | int] | None = None
 
 
 class StudentListResponse(BaseModel):
@@ -149,3 +153,41 @@ class StudentListResponse(BaseModel):
     page_size: int
     total_items: int
     total_pages: int
+
+
+class StudentImportRow(BaseModel):
+    """Normalized student import row."""
+
+    row_number: int | None = None
+    roll_number: str = Field(..., min_length=1, max_length=30)
+    first_name: str = Field(..., min_length=1, max_length=50)
+    last_name: str = Field(..., min_length=1, max_length=50)
+    email: EmailStr
+    course: str = Field(..., min_length=1, max_length=100)
+    department: str = Field(..., min_length=1, max_length=100)
+    semester: int = Field(..., ge=1)
+    section: str | None = Field(default="A", max_length=10)
+    enrollment_number: str | None = Field(default=None, max_length=50)
+    phone: str = "0000000000"
+    gender: str = "Other"
+    date_of_birth: date = Field(default_factory=lambda: date(2000, 1, 1))
+    academic_year: str = Field(default="2026-27", min_length=4, max_length=20)
+    admission_date: date = Field(default_factory=date.today)
+    classroom_id: int | None = None
+
+    @field_validator("email")
+    @classmethod
+    def clean_import_email(cls, value: EmailStr) -> str:
+        return normalize_email(str(value))
+
+    @field_validator("phone")
+    @classmethod
+    def validate_import_phone(cls, value: str) -> str:
+        return validate_phone(value)
+
+
+class StudentImportCommit(BaseModel):
+    """Commit validated student import rows."""
+
+    rows: list[StudentImportRow]
+    import_valid_only: bool = True

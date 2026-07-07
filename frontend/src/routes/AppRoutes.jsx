@@ -14,6 +14,8 @@ const StudentDashboard = lazy(() => import("../pages/dashboard/StudentDashboard"
 const StudentsList = lazy(() => import("../pages/students/StudentsList"));
 const StudentForm = lazy(() => import("../pages/students/StudentForm"));
 const StudentDetail = lazy(() => import("../pages/students/StudentDetail"));
+const StudentImportPage = lazy(() => import("../pages/students/StudentImportPage"));
+const ClassroomsList = lazy(() => import("../pages/classrooms/ClassroomsList"));
 const SubjectsList = lazy(() => import("../pages/subjects/SubjectsList"));
 const SubjectForm = lazy(() => import("../pages/subjects/SubjectForm"));
 const SubjectDetail = lazy(() => import("../pages/subjects/SubjectDetail"));
@@ -59,8 +61,10 @@ export function AppRoutes() {
           <Route path="/dashboard/student" element={<ProtectedRoute roles={[ROLES.STUDENT]}><StudentDashboard /></ProtectedRoute>} />
           <Route path="/students/list" element={<ProtectedRoute roles={[ROLES.TEACHER]}><StudentsList /></ProtectedRoute>} />
           <Route path="/students/create" element={<ProtectedRoute roles={[ROLES.TEACHER]}><StudentForm /></ProtectedRoute>} />
+          <Route path="/students/import" element={<ProtectedRoute roles={[ROLES.TEACHER]}><StudentImportPage /></ProtectedRoute>} />
           <Route path="/students/:id" element={<StudentDetail />} />
           <Route path="/students/edit/:id" element={<ProtectedRoute roles={[ROLES.TEACHER]}><StudentForm /></ProtectedRoute>} />
+          <Route path="/classrooms/list" element={<ProtectedRoute roles={[ROLES.TEACHER]}><ClassroomsList /></ProtectedRoute>} />
           <Route path="/subjects/list" element={<SubjectsList />} />
           <Route path="/subjects/create" element={<ProtectedRoute roles={[ROLES.TEACHER]}><SubjectForm /></ProtectedRoute>} />
           <Route path="/subjects/:id" element={<SubjectDetail />} />

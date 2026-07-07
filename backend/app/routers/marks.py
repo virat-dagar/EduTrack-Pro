@@ -23,6 +23,7 @@ def list_marks(
     q: str | None = None,
     student_id: int | None = None,
     subject_id: int | None = None,
+    classroom_id: int | None = None,
     assessment_type: str | None = None,
     semester: int | None = None,
     start_date: date | None = None,
@@ -42,6 +43,7 @@ def list_marks(
         q,
         student_id,
         subject_id,
+        classroom_id,
         assessment_type,
         semester,
         start_date,
@@ -100,6 +102,7 @@ def student_marks(
         None,
         student_id,
         subject_id,
+        None,
         assessment_type,
         semester,
     )
@@ -130,6 +133,7 @@ def subject_marks(
         None,
         None,
         subject_id,
+        None,
         assessment_type,
         semester,
     )

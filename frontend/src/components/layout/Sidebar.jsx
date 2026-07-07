@@ -1,6 +1,7 @@
 import {
   BarChart3,
   BookOpen,
+  Building2,
   ClipboardCheck,
   FileText,
   GraduationCap,
@@ -17,6 +18,7 @@ import { ROLES } from "../../utils/constants";
 
 const teacherNav = [
   { to: "/dashboard/teacher", label: "Dashboard", icon: LayoutDashboard },
+  { to: "/classrooms/list", label: "Classrooms", icon: Building2 },
   { to: "/students/list", label: "Students", icon: UsersRound },
   { to: "/subjects/list", label: "Subjects", icon: BookOpen },
   { to: "/attendance/list", label: "Attendance", icon: ClipboardCheck },

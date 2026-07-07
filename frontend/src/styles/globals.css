@@ -352,6 +352,11 @@ select {
   background: var(--color-surface);
 }
 
+.input-compact {
+  min-height: 34px;
+  padding: 0 10px;
+}
+
 .input-error {
   border-color: var(--color-danger);
 }
@@ -445,6 +450,66 @@ select {
   margin: 4px 0 0;
   overflow-wrap: anywhere;
   font-weight: 700;
+}
+
+.mt-4 {
+  margin-top: var(--space-4);
+}
+
+.mb-4 {
+  margin-bottom: var(--space-4);
+}
+
+.checkbox-field {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 42px;
+  font-weight: 700;
+}
+
+.summary-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+  color: var(--color-muted);
+  font-weight: 750;
+}
+
+.credential-panel,
+.section-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.credential-panel {
+  justify-content: flex-start;
+}
+
+.credential-panel h2,
+.section-heading h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.credential-panel p {
+  margin: 4px 0 0;
+}
+
+.question-list {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.question-row {
+  display: grid;
+  grid-template-columns: 90px minmax(0, 1fr) minmax(120px, 180px) auto;
+  align-items: end;
+  gap: var(--space-3);
 }
 
 .auth-layout {
@@ -590,7 +655,8 @@ select {
   }
 
   .form-grid,
-  .detail-grid {
+  .detail-grid,
+  .question-row {
     grid-template-columns: 1fr;
   }
 

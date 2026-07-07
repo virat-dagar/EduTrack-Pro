@@ -29,6 +29,9 @@ api.interceptors.response.use(
       message: "Network error. Please try again.",
       errors: [],
     };
+    if (!payload.message && payload.detail) {
+      payload.message = typeof payload.detail === "string" ? payload.detail : "Request failed.";
+    }
     if (status === 401) {
       window.dispatchEvent(new Event("edutrack:unauthorized"));
     }

@@ -31,7 +31,11 @@ def test_student_submission_and_teacher_review(client, db_session):
     response = client.post(
         "/api/v1/submissions",
         headers=student_headers,
-        json={"assignment_id": assignment.id, "submission_notes": "Done"},
+        json={
+            "assignment_id": assignment.id,
+            "submitted_file": "/uploads/submissions/student_1/sql-assignment.pdf",
+            "submission_notes": "Done",
+        },
     )
     assert response.status_code == 201
     submission_id = response.json()["data"]["id"]

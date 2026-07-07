@@ -11,6 +11,7 @@ class SubjectBase(BaseModel):
     """Shared subject fields."""
 
     subject_code: str = Field(..., min_length=1, max_length=20)
+    classroom_id: int | None = None
     subject_name: str = Field(..., min_length=1, max_length=100)
     course: str = Field(..., min_length=1, max_length=100)
     department: str = Field(..., min_length=1, max_length=100)
@@ -38,6 +39,7 @@ class SubjectUpdate(BaseModel):
     """Update subject request."""
 
     subject_name: str | None = Field(default=None, min_length=1, max_length=100)
+    classroom_id: int | None = None
     course: str | None = Field(default=None, min_length=1, max_length=100)
     department: str | None = Field(default=None, min_length=1, max_length=100)
     semester: int | None = Field(default=None, ge=1)
@@ -52,6 +54,7 @@ class SubjectResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
     id: int
+    classroom_id: int | None = None
     subject_code: str
     subject_name: str
     course: str

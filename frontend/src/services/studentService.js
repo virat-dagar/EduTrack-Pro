@@ -17,6 +17,19 @@ export const studentService = {
   create(payload) {
     return api.post("/students", payload);
   },
+  previewImport(file) {
+    const formData = new FormData();
+    formData.append("file", file);
+    return api.post("/students/import/preview", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+  },
+  commitImport(rows) {
+    return api.post("/students/import/commit", { rows, import_valid_only: true });
+  },
+  exportStudents() {
+    return api.get("/students/export", { responseType: "blob" });
+  },
   update(id, payload) {
     return api.put(`/students/${id}`, payload);
   },

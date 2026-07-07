@@ -11,6 +11,18 @@ export const attendanceService = {
   create(payload) {
     return api.post("/attendance", payload);
   },
+  bulk(payload) {
+    return api.post("/attendance/bulk", payload);
+  },
+  sheet(classroomId, params) {
+    return api.get(`/attendance/classroom/${classroomId}/sheet`, { params: compactParams(params) });
+  },
+  analytics(params) {
+    return api.get("/attendance/analytics", { params: compactParams(params) });
+  },
+  atRisk(params) {
+    return api.get("/attendance/at-risk", { params: compactParams(params) });
+  },
   update(id, payload) {
     return api.put(`/attendance/${id}`, payload);
   },
