@@ -14,6 +14,12 @@ export const assignmentService = {
   update(id, payload) {
     return api.put(`/assignments/${id}`, payload);
   },
+  publish(id) {
+    return api.put(`/assignments/${id}/publish`);
+  },
+  submissionSummary(id) {
+    return api.get(`/assignments/${id}/submissions/summary`);
+  },
   remove(id) {
     return api.delete(`/assignments/${id}`);
   },

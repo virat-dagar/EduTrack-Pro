@@ -4,6 +4,7 @@ from sqlalchemy import or_
 from sqlalchemy.orm import Session
 
 from app.exceptions import ConflictError, NotFoundError
+from app.models.classroom import Classroom
 from app.models.subject import Subject
 from app.schemas.subject import SubjectCreate, SubjectUpdate
 from app.utils.helpers import apply_sorting, normalize_pagination, paginate_query
@@ -31,6 +32,7 @@ class SubjectService:
         q: str | None = None,
         course: str | None = None,
         department: str | None = None,
+        classroom_id: int | None = None,
         semester: int | None = None,
         credits: int | None = None,
         is_active: bool | None = None,
@@ -52,6 +54,7 @@ class SubjectService:
                 )
             )
         filters = {
+            Subject.classroom_id: classroom_id,
             Subject.course: course,
             Subject.department: department,
             Subject.semester: semester,
@@ -72,6 +75,8 @@ class SubjectService:
 
         if db.query(Subject).filter(Subject.subject_code == payload.subject_code).first():
             raise ConflictError("Subject code already exists.")
+        if payload.classroom_id and db.query(Classroom).filter(Classroom.id == payload.classroom_id).first() is None:
+            raise NotFoundError("Classroom not found.")
         subject = Subject(**payload.model_dump())
         db.add(subject)
         db.commit()
@@ -83,7 +88,10 @@ class SubjectService:
         """Update a subject."""
 
         subject = SubjectService.get_subject(db, subject_id)
-        for field, value in payload.model_dump(exclude_unset=True).items():
+        data = payload.model_dump(exclude_unset=True)
+        if data.get("classroom_id") and db.query(Classroom).filter(Classroom.id == data["classroom_id"]).first() is None:
+            raise NotFoundError("Classroom not found.")
+        for field, value in data.items():
             setattr(subject, field, value)
         db.commit()
         db.refresh(subject)

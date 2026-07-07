@@ -2,11 +2,11 @@
 
 from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
-
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
-from app.core.config import get_settings
+from app.core.config import get_settings, resolve_upload_dir
 from app.core.logging import configure_logging
 from app.database.init_db import create_database
 from app.exceptions.handlers import register_exception_handlers
@@ -14,6 +14,7 @@ from app.routers import (
     assignments,
     attendance,
     auth,
+    classrooms,
     dashboard,
     marks,
     reports,
@@ -26,12 +27,15 @@ from app.utils.response import success_response
 
 settings = get_settings()
 configure_logging()
+upload_root = resolve_upload_dir(settings.upload_dir)
+upload_root.mkdir(parents=True, exist_ok=True)
 
 
 @asynccontextmanager
 async def lifespan(app_instance: FastAPI) -> AsyncGenerator[None, None]:
     """Initialize application resources."""
 
+    upload_root.mkdir(parents=True, exist_ok=True)
     create_database()
     yield
 
@@ -52,9 +56,11 @@ app.add_middleware(
 )
 
 register_exception_handlers(app)
+app.mount("/uploads", StaticFiles(directory=upload_root), name="uploads")
 
 app.include_router(auth.router)
 app.include_router(users.router)
+app.include_router(classrooms.router)
 app.include_router(students.router)
 app.include_router(subjects.router)
 app.include_router(attendance.router)

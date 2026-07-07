@@ -22,6 +22,7 @@ class Marks(Base):
     )
 
     id = Column(Integer, primary_key=True, index=True)
+    classroom_id = Column(Integer, ForeignKey("classrooms.id"), nullable=True, index=True)
     student_id = Column(Integer, ForeignKey("students.id"), nullable=False, index=True)
     subject_id = Column(Integer, ForeignKey("subjects.id"), nullable=False, index=True)
     assessment_type = Column(String(50), nullable=False, index=True)
@@ -38,6 +39,7 @@ class Marks(Base):
         onupdate=utc_now,
     )
 
+    classroom = relationship("Classroom", back_populates="marks_records")
     student = relationship("Student", back_populates="marks_records")
     subject = relationship("Subject", back_populates="marks_records")
     teacher = relationship("User", back_populates="marks_entered", foreign_keys=[entered_by])

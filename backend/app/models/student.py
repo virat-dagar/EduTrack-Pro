@@ -14,6 +14,7 @@ class Student(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False, unique=True, index=True)
+    classroom_id = Column(Integer, ForeignKey("classrooms.id"), nullable=True, index=True)
     roll_number = Column(String(30), unique=True, nullable=False, index=True)
     enrollment_number = Column(String(50), unique=True, nullable=False, index=True)
     first_name = Column(String(50), nullable=False)
@@ -39,6 +40,7 @@ class Student(Base):
     )
 
     user = relationship("User", back_populates="student_profile")
+    classroom = relationship("Classroom", back_populates="students")
     attendance_records = relationship("Attendance", back_populates="student")
     marks_records = relationship("Marks", back_populates="student")
     submissions = relationship("Submission", back_populates="student")

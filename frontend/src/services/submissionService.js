@@ -11,6 +11,11 @@ export const submissionService = {
   create(payload) {
     return api.post("/submissions", payload);
   },
+  upload(file) {
+    const formData = new FormData();
+    formData.append("file", file);
+    return api.post("/submissions/upload", formData);
+  },
   update(id, payload) {
     return api.put(`/submissions/${id}`, payload);
   },

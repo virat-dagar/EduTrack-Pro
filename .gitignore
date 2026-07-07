@@ -30,3 +30,7 @@ dist/
 # Logs
 *.log
 logs/
+
+# Runtime uploads
+uploads/
+backend/uploads/

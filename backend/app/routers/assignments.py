@@ -19,6 +19,7 @@ def list_assignments(
     page_size: int = Query(20, ge=1, le=100),
     q: str | None = None,
     subject_id: int | None = None,
+    classroom_id: int | None = None,
     teacher_id: int | None = None,
     semester: int | None = None,
     course: str | None = None,
@@ -38,6 +39,7 @@ def list_assignments(
         page_size,
         q,
         subject_id,
+        classroom_id,
         teacher_id,
         semester,
         course,
@@ -47,7 +49,12 @@ def list_assignments(
         order,
     )
     data = pagination_response(
-        [AssignmentResponse.model_validate(AssignmentService.enrich(item)).model_dump(mode="json") for item in items],
+        [
+            AssignmentResponse.model_validate(AssignmentService.enrich_for_user(db, item, current_user)).model_dump(
+                mode="json"
+            )
+            for item in items
+        ],
         safe_page,
         safe_page_size,
         total_items,
@@ -65,7 +72,12 @@ def upcoming_assignments(
     items = AssignmentService.upcoming(db, current_user)
     return success_response(
         "",
-        [AssignmentResponse.model_validate(AssignmentService.enrich(item)).model_dump(mode="json") for item in items],
+        [
+            AssignmentResponse.model_validate(AssignmentService.enrich_for_user(db, item, current_user)).model_dump(
+                mode="json"
+            )
+            for item in items
+        ],
     )
 
 
@@ -98,7 +110,12 @@ def subject_assignments(
         page_size=100,
     )
     data = pagination_response(
-        [AssignmentResponse.model_validate(AssignmentService.enrich(item)).model_dump(mode="json") for item in items],
+        [
+            AssignmentResponse.model_validate(AssignmentService.enrich_for_user(db, item, current_user)).model_dump(
+                mode="json"
+            )
+            for item in items
+        ],
         page,
         page_size,
         total_items,
@@ -155,8 +172,36 @@ def get_assignment(
     assignment = AssignmentService.get_assignment(db, assignment_id)
     return success_response(
         "",
+        AssignmentResponse.model_validate(AssignmentService.enrich_for_user(db, assignment, current_user)).model_dump(
+            mode="json"
+        ),
+    )
+
+
+@router.put("/{assignment_id}/publish", summary="Publish assignment")
+def publish_assignment(
+    assignment_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_teacher),
+) -> dict:
+    """Publish assignment to its target classroom."""
+
+    assignment = AssignmentService.publish(db, assignment_id)
+    return success_response(
+        "Assignment published successfully.",
         AssignmentResponse.model_validate(AssignmentService.enrich(assignment)).model_dump(mode="json"),
     )
+
+
+@router.get("/{assignment_id}/submissions/summary", summary="Assignment submission summary")
+def assignment_submission_summary(
+    assignment_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_teacher),
+) -> dict:
+    """Return assignment submission totals."""
+
+    return success_response("", AssignmentService.submission_summary(db, assignment_id))
 
 
 @router.put("/{assignment_id}", summary="Update assignment")

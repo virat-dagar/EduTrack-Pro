@@ -6,8 +6,10 @@ BACKEND_DIR="$ROOT_DIR/backend"
 FRONTEND_DIR="$ROOT_DIR/frontend"
 
 BACKEND_HOST="${BACKEND_HOST:-127.0.0.1}"
+BACKEND_PORT_WAS_SET="${BACKEND_PORT+x}"
 BACKEND_PORT="${BACKEND_PORT:-8000}"
 FRONTEND_HOST="${FRONTEND_HOST:-127.0.0.1}"
+FRONTEND_PORT_WAS_SET="${FRONTEND_PORT+x}"
 FRONTEND_PORT="${FRONTEND_PORT:-5173}"
 SKIP_SETUP="${SKIP_SETUP:-0}"
 
@@ -26,6 +28,53 @@ ok() {
 fail() {
   printf 'ERROR: %s\n' "$1" >&2
   exit 1
+}
+
+port_in_use() {
+  local port=$1
+
+  if command -v lsof >/dev/null 2>&1; then
+    lsof -nP -iTCP:"$port" -sTCP:LISTEN -t >/dev/null 2>&1
+    return $?
+  fi
+
+  if command -v nc >/dev/null 2>&1; then
+    nc -z "$BACKEND_HOST" "$port" >/dev/null 2>&1
+    return $?
+  fi
+
+  return 1
+}
+
+choose_available_port() {
+  local port=$1
+
+  while port_in_use "$port"; do
+    port=$((port + 1))
+  done
+
+  printf '%s\n' "$port"
+}
+
+select_ports() {
+  local selected_backend_port
+  local selected_frontend_port
+
+  if [ -z "$BACKEND_PORT_WAS_SET" ]; then
+    selected_backend_port="$(choose_available_port "$BACKEND_PORT")"
+    if [ "$selected_backend_port" != "$BACKEND_PORT" ]; then
+      info "Backend port $BACKEND_PORT is busy; using $selected_backend_port instead."
+      BACKEND_PORT="$selected_backend_port"
+    fi
+  fi
+
+  if [ -z "$FRONTEND_PORT_WAS_SET" ]; then
+    selected_frontend_port="$(choose_available_port "$FRONTEND_PORT")"
+    if [ "$selected_frontend_port" != "$FRONTEND_PORT" ]; then
+      info "Frontend port $FRONTEND_PORT is busy; using $selected_frontend_port instead."
+      FRONTEND_PORT="$selected_frontend_port"
+    fi
+  fi
 }
 
 find_backend_python() {
@@ -71,7 +120,7 @@ ensure_backend() {
   BACKEND_PYTHON="$(find_backend_python)" || fail "Backend virtual environment was not found. Run ./setup.sh or allow run_demo.sh to create it."
 
   if [ "$SKIP_SETUP" != "1" ]; then
-    if ! "$BACKEND_PYTHON" -c 'import fastapi, sqlalchemy, uvicorn' >/dev/null 2>&1; then
+    if ! "$BACKEND_PYTHON" -c 'import fastapi, openpyxl, pandas, sqlalchemy, uvicorn' >/dev/null 2>&1; then
       (cd "$BACKEND_DIR" && "$BACKEND_PYTHON" -m pip install -r requirements.txt)
     fi
 
@@ -157,6 +206,7 @@ main() {
   trap cleanup INT TERM EXIT
 
   info "EduTrack Pro demo runner"
+  select_ports
   ensure_backend
   ensure_frontend
   start_backend

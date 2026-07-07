@@ -2,6 +2,7 @@
 
 from functools import lru_cache
 import os
+from pathlib import Path
 
 
 class Settings:
@@ -18,6 +19,8 @@ class Settings:
     access_token_expire_minutes: int = int(
         os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "1440")
     )
+    upload_dir: str = os.getenv("UPLOAD_DIR", "uploads")
+    max_upload_bytes: int = int(os.getenv("MAX_UPLOAD_BYTES", "10485760"))
     cors_origins: list[str] = [
         origin.strip()
         for origin in os.getenv(
@@ -36,3 +39,13 @@ def get_settings() -> Settings:
     """Return cached application settings."""
 
     return Settings()
+
+
+def resolve_upload_dir(upload_dir: str | None = None) -> Path:
+    """Return an absolute path for runtime uploads."""
+
+    configured_dir = upload_dir or get_settings().upload_dir
+    path = Path(configured_dir)
+    if path.is_absolute():
+        return path
+    return Path(__file__).resolve().parents[2] / path

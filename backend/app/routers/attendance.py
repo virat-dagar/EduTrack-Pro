@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 from app.core.dependencies import get_current_user, require_teacher
 from app.database.session import get_db
 from app.models.user import User
-from app.schemas.attendance import AttendanceCreate, AttendanceResponse, AttendanceUpdate
+from app.schemas.attendance import AttendanceBulkCreate, AttendanceCreate, AttendanceResponse, AttendanceUpdate
 from app.services.attendance_service import AttendanceService
 from app.services.student_service import StudentService
 from app.utils.response import pagination_response, success_response
@@ -22,6 +22,7 @@ def list_attendance(
     page_size: int = Query(20, ge=1, le=100),
     student_id: int | None = None,
     subject_id: int | None = None,
+    classroom_id: int | None = None,
     semester: int | None = None,
     status: str | None = None,
     attendance_date: date | None = None,
@@ -41,6 +42,7 @@ def list_attendance(
         page_size,
         student_id,
         subject_id,
+        classroom_id,
         semester,
         status,
         attendance_date,
@@ -66,6 +68,54 @@ def attendance_summary(
     """Return attendance statistics."""
 
     return success_response("", AttendanceService.summary(db))
+
+
+@router.get("/analytics", summary="Attendance analytics")
+def attendance_analytics(
+    classroom_id: int | None = None,
+    subject_id: int | None = None,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_teacher),
+) -> dict:
+    """Return attendance analytics."""
+
+    return success_response("", AttendanceService.analytics(db, classroom_id, subject_id))
+
+
+@router.get("/at-risk", summary="At-risk attendance students")
+def at_risk_students(
+    threshold: float = Query(75.0, ge=0, le=100),
+    classroom_id: int | None = None,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_teacher),
+) -> dict:
+    """Return students below attendance threshold."""
+
+    return success_response("", AttendanceService.at_risk_students(db, threshold, classroom_id))
+
+
+@router.get("/classroom/{classroom_id}/sheet", summary="Classroom attendance sheet")
+def classroom_attendance_sheet(
+    classroom_id: int,
+    subject_id: int,
+    attendance_date: date,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_teacher),
+) -> dict:
+    """Load classroom students for bulk attendance marking."""
+
+    return success_response("", AttendanceService.classroom_sheet(db, classroom_id, subject_id, attendance_date))
+
+
+@router.post("/bulk", status_code=status.HTTP_201_CREATED, summary="Bulk mark attendance")
+def bulk_mark_attendance(
+    payload: AttendanceBulkCreate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_teacher),
+) -> dict:
+    """Create or update attendance for a classroom."""
+
+    return success_response("Bulk attendance saved successfully.", AttendanceService.mark_bulk(db, payload, current_user.id))
 
 
 @router.get("/percentage/{student_id}", summary="Attendance percentage")
@@ -106,6 +156,7 @@ def student_attendance(
         100,
         student_id,
         subject_id,
+        None,
         semester,
         None,
         None,
@@ -139,6 +190,7 @@ def subject_attendance(
         100,
         None,
         subject_id,
+        None,
         semester,
         status_filter,
         attendance_date,

@@ -40,6 +40,7 @@ class MarksService:
         q: str | None = None,
         student_id: int | None = None,
         subject_id: int | None = None,
+        classroom_id: int | None = None,
         assessment_type: str | None = None,
         semester: int | None = None,
         start_date: date | None = None,
@@ -68,6 +69,8 @@ class MarksService:
             query = query.filter(Marks.student_id == student_id)
         if subject_id:
             query = query.filter(Marks.subject_id == subject_id)
+        if classroom_id:
+            query = query.filter(Marks.classroom_id == classroom_id)
         if assessment_type:
             query = query.filter(Marks.assessment_type == assessment_type)
         if semester:
@@ -84,7 +87,7 @@ class MarksService:
     def add_marks(db: Session, payload: MarksCreate, teacher_id: int) -> Marks:
         """Create a marks record."""
 
-        MarksService._validate_student_subject(db, payload.student_id, payload.subject_id)
+        student = MarksService._validate_student_subject(db, payload.student_id, payload.subject_id)
         duplicate = (
             db.query(Marks)
             .filter(
@@ -97,7 +100,9 @@ class MarksService:
         )
         if duplicate:
             raise ConflictError("Marks already exist for this assessment.")
-        record = Marks(**payload.model_dump(), entered_by=teacher_id)
+        data = payload.model_dump()
+        data["classroom_id"] = data.get("classroom_id") or student.classroom_id
+        record = Marks(**data, entered_by=teacher_id)
         db.add(record)
         db.commit()
         db.refresh(record)
@@ -172,6 +177,7 @@ class MarksService:
         percentage = AnalyticsService.percentage(record.marks_obtained, record.maximum_marks)
         return {
             "id": record.id,
+            "classroom_id": record.classroom_id,
             "student_id": record.student_id,
             "subject_id": record.subject_id,
             "assessment_type": record.assessment_type,
@@ -187,10 +193,12 @@ class MarksService:
         }
 
     @staticmethod
-    def _validate_student_subject(db: Session, student_id: int, subject_id: int) -> None:
+    def _validate_student_subject(db: Session, student_id: int, subject_id: int) -> Student:
         """Validate marks relationships."""
 
-        if db.query(Student).filter(Student.id == student_id).first() is None:
+        student = db.query(Student).filter(Student.id == student_id).first()
+        if student is None:
             raise NotFoundError("Student not found.")
         if db.query(Subject).filter(Subject.id == subject_id).first() is None:
             raise NotFoundError("Subject not found.")
+        return student

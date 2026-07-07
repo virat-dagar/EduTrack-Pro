@@ -1,6 +1,6 @@
 """Submission database model."""
 
-from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, Text, UniqueConstraint
+from sqlalchemy import Column, DateTime, Float, ForeignKey, Integer, String, Text, UniqueConstraint
 from sqlalchemy.orm import relationship
 
 from app.database.base import Base
@@ -26,9 +26,13 @@ class Submission(Base):
     status = Column(String(20), nullable=False, index=True)
     submission_notes = Column(Text, nullable=True)
     attachment_path = Column(String(255), nullable=True)
+    submitted_file = Column(String(255), nullable=True)
     reviewed_by = Column(Integer, ForeignKey("users.id"), nullable=True, index=True)
     reviewed_at = Column(DateTime(timezone=True), nullable=True)
     feedback = Column(Text, nullable=True)
+    total_marks = Column(Float, nullable=True)
+    percentage = Column(Float, nullable=True)
+    grade = Column(String(5), nullable=True)
     created_at = Column(DateTime(timezone=True), nullable=False, default=utc_now)
     updated_at = Column(
         DateTime(timezone=True),
@@ -40,3 +44,8 @@ class Submission(Base):
     assignment = relationship("Assignment", back_populates="submissions")
     student = relationship("Student", back_populates="submissions")
     reviewer = relationship("User", back_populates="submissions_reviewed", foreign_keys=[reviewed_by])
+    question_grades = relationship(
+        "SubmissionGrade",
+        back_populates="submission",
+        cascade="all, delete-orphan",
+    )
