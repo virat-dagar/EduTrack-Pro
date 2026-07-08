@@ -33,6 +33,13 @@ def seed_demo_data() -> None:
             db.add(teacher)
             db.commit()
             db.refresh(teacher)
+        else:
+            # Force-reset credentials in case a stale db has a different
+            # password from an earlier run (e.g. an old committed db file).
+            teacher.password_hash = hash_password("Password123")
+            teacher.role = "teacher"
+            teacher.is_active = True
+            db.commit()
 
         student_user = db.query(User).filter(User.email == "student@example.com").first()
         if student_user is None:
@@ -46,6 +53,11 @@ def seed_demo_data() -> None:
             db.add(student_user)
             db.commit()
             db.refresh(student_user)
+        else:
+            student_user.password_hash = hash_password("Password123")
+            student_user.role = "student"
+            student_user.is_active = True
+            db.commit()
 
         student = db.query(Student).filter(Student.user_id == student_user.id).first()
         classroom = (
