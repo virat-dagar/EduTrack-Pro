@@ -1,13 +1,38 @@
 :root[data-theme="dark"] {
-  --color-bg: #111827;
-  --color-surface: #182235;
-  --color-surface-muted: #223049;
-  --color-text: #edf2f7;
-  --color-muted: #aab6c8;
-  --color-border: #31415f;
-  --color-accent: #60a5fa;
-  --color-accent-strong: #93c5fd;
-  --shadow-sm: 0 1px 2px rgb(0 0 0 / 24%);
-  --shadow-md: 0 10px 28px rgb(0 0 0 / 28%);
+  /* Base surfaces */
+  --color-bg: #06060f;
+  --color-surface: rgba(22, 18, 42, 0.6);
+  --color-surface-solid: #120f28;
+  --color-surface-muted: rgba(139, 92, 246, 0.1);
+  --color-text: #f4f2ff;
+  --color-muted: #a6a1c9;
+  --color-border: rgba(148, 116, 255, 0.25);
+
+  /* Accents — violet/blue matches the EduTrack Pro neon mockups */
+  --color-accent: #8b5cf6;
+  --color-accent-strong: #a78bfa;
+  --color-accent-2: #3b82f6;
+  --color-gold: #d4af37;
+
+  /* Semantic colors, tuned to glow on dark */
+  --color-success: #34d399;
+  --color-warning: #fbbf24;
+  --color-danger: #fb7185;
+  --color-teal: #2dd4bf;
+  --color-violet: #a78bfa;
+
+  /* Gradients + glow, new tokens used by dark-theme.css */
+  --gradient-primary: linear-gradient(135deg, #7c3aed 0%, #3b82f6 100%);
+  --gradient-bg:
+    radial-gradient(circle at 15% 0%, rgba(124, 58, 237, 0.35), transparent 40%),
+    radial-gradient(circle at 85% 10%, rgba(59, 130, 246, 0.28), transparent 42%),
+    radial-gradient(circle at 50% 100%, rgba(139, 92, 246, 0.18), transparent 55%);
+  --glow-primary: 0 0 28px rgba(139, 92, 246, 0.4);
+  --glow-soft: 0 0 40px rgba(76, 29, 149, 0.25);
+  --blur-glass: 18px;
+
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 55%);
+  --shadow-md: 0 24px 60px rgb(10 6 30 / 55%);
+
   color-scheme: dark;
-}
+} 

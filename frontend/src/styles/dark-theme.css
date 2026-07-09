@@ -1,0 +1,311 @@
+/* =========================================================
+   EduTrack Pro — neon dark theme
+   Everything here is scoped under [data-theme="dark"], so
+   light mode (the existing default) is completely untouched.
+   ========================================================= */
+
+/* ---- Ambient background ---- */
+[data-theme="dark"] body {
+  background-color: var(--color-bg);
+  background-image: var(--gradient-bg);
+  background-attachment: fixed;
+}
+
+/* ---- Scrollbar ---- */
+[data-theme="dark"] ::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: rgba(139, 92, 246, 0.35);
+  border-radius: 999px;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background: rgba(139, 92, 246, 0.55);
+}
+
+/* ---- Sidebar ---- */
+[data-theme="dark"] .sidebar {
+  background: rgba(9, 7, 22, 0.75);
+  backdrop-filter: blur(var(--blur-glass));
+  -webkit-backdrop-filter: blur(var(--blur-glass));
+  border-right: 1px solid var(--color-border);
+}
+
+[data-theme="dark"] .brand svg {
+  color: var(--color-gold);
+}
+
+[data-theme="dark"] .brand span {
+  background: linear-gradient(135deg, #f5d47a 0%, #d4af37 55%, #b8860b 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: 800;
+}
+
+[data-theme="dark"] .nav-link {
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+[data-theme="dark"] .nav-link:hover {
+  color: var(--color-text);
+  background: rgba(139, 92, 246, 0.12);
+}
+
+[data-theme="dark"] .nav-link.active {
+  color: #fff;
+  background: var(--gradient-primary);
+  box-shadow: var(--glow-primary);
+}
+
+/* ---- Topbar ---- */
+[data-theme="dark"] .topbar {
+  background: rgba(9, 7, 22, 0.65);
+  backdrop-filter: blur(var(--blur-glass));
+  -webkit-backdrop-filter: blur(var(--blur-glass));
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* ---- Cards ---- */
+[data-theme="dark"] .card {
+  background: var(--color-surface);
+  backdrop-filter: blur(var(--blur-glass));
+  -webkit-backdrop-filter: blur(var(--blur-glass));
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  box-shadow: var(--shadow-md);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+[data-theme="dark"] .card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(139, 92, 246, 0.5);
+  box-shadow: var(--glow-soft), var(--shadow-md);
+}
+
+/* ---- Stat card icon glows, matches the tone-per-metric mockup style ---- */
+[data-theme="dark"] .stat-icon {
+  background: var(--gradient-primary);
+  box-shadow: var(--glow-primary);
+}
+
+[data-theme="dark"] .stat-teal .stat-icon {
+  background: linear-gradient(135deg, #2dd4bf, #0d9488);
+  box-shadow: 0 0 24px rgba(45, 212, 191, 0.4);
+}
+
+[data-theme="dark"] .stat-violet .stat-icon {
+  background: linear-gradient(135deg, #a78bfa, #7c3aed);
+  box-shadow: 0 0 24px rgba(167, 139, 250, 0.4);
+}
+
+[data-theme="dark"] .stat-amber .stat-icon {
+  background: linear-gradient(135deg, #fbbf24, #d97706);
+  box-shadow: 0 0 24px rgba(251, 191, 36, 0.35);
+}
+
+[data-theme="dark"] .stat-green .stat-icon {
+  background: linear-gradient(135deg, #34d399, #059669);
+  box-shadow: 0 0 24px rgba(52, 211, 153, 0.35);
+}
+
+[data-theme="dark"] .stat-red .stat-icon {
+  background: linear-gradient(135deg, #fb7185, #e11d48);
+  box-shadow: 0 0 24px rgba(251, 113, 133, 0.35);
+}
+
+[data-theme="dark"] .stat-gray .stat-icon {
+  background: rgba(166, 161, 201, 0.25);
+}
+
+/* ---- Buttons ---- */
+[data-theme="dark"] .btn {
+  border-radius: 10px;
+}
+
+[data-theme="dark"] .btn-primary {
+  background: var(--gradient-primary);
+  color: #fff;
+  border: none;
+  box-shadow: var(--glow-primary);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+
+[data-theme="dark"] .btn-primary:hover:not(:disabled) {
+  transform: translateY(-1px);
+  filter: brightness(1.08);
+  box-shadow: 0 0 36px rgba(139, 92, 246, 0.55);
+}
+
+[data-theme="dark"] .btn-secondary {
+  background: rgba(139, 92, 246, 0.1);
+  color: var(--color-text);
+  border-color: var(--color-border);
+}
+
+[data-theme="dark"] .btn-secondary:hover:not(:disabled) {
+  background: rgba(139, 92, 246, 0.18);
+  border-color: rgba(139, 92, 246, 0.5);
+}
+
+[data-theme="dark"] .btn-ghost {
+  color: var(--color-text);
+}
+
+[data-theme="dark"] .btn-ghost:hover:not(:disabled) {
+  background: rgba(139, 92, 246, 0.12);
+}
+
+/* ---- Inputs ---- */
+[data-theme="dark"] .input {
+  background: rgba(8, 6, 20, 0.55);
+  border-color: var(--color-border);
+  color: var(--color-text);
+  border-radius: 10px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+[data-theme="dark"] .input::placeholder {
+  color: rgba(166, 161, 201, 0.55);
+}
+
+[data-theme="dark"] .input:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.25);
+}
+
+/* ---- Badges ---- */
+[data-theme="dark"] .badge-success {
+  background: rgba(52, 211, 153, 0.18);
+  color: #34d399;
+  box-shadow: inset 0 0 0 1px rgba(52, 211, 153, 0.4);
+}
+
+[data-theme="dark"] .badge-warning {
+  background: rgba(251, 191, 36, 0.18);
+  color: #fbbf24;
+  box-shadow: inset 0 0 0 1px rgba(251, 191, 36, 0.4);
+}
+
+[data-theme="dark"] .badge-danger {
+  background: rgba(251, 113, 133, 0.18);
+  color: #fb7185;
+  box-shadow: inset 0 0 0 1px rgba(251, 113, 133, 0.4);
+}
+
+[data-theme="dark"] .badge-neutral {
+  background: rgba(166, 161, 201, 0.18);
+  color: #cbd0e8;
+  box-shadow: inset 0 0 0 1px rgba(166, 161, 201, 0.35);
+}
+
+/* ---- Spinner ---- */
+[data-theme="dark"] .spinner {
+  border-color: rgba(139, 92, 246, 0.2);
+  border-top-color: var(--color-accent);
+}
+
+/* ---- Tables ---- */
+[data-theme="dark"] .table-wrap {
+  background: var(--color-surface);
+  border-color: var(--color-border);
+  backdrop-filter: blur(var(--blur-glass));
+  -webkit-backdrop-filter: blur(var(--blur-glass));
+}
+
+[data-theme="dark"] .data-table th {
+  background: rgba(139, 92, 246, 0.08);
+  color: var(--color-muted);
+}
+
+[data-theme="dark"] .data-table td,
+[data-theme="dark"] .data-table th {
+  border-bottom: 1px solid var(--color-border);
+}
+
+[data-theme="dark"] .data-table tr:hover td {
+  background: rgba(139, 92, 246, 0.05);
+}
+
+/* ---- Activity list ---- */
+[data-theme="dark"] .activity-list li {
+  background: rgba(139, 92, 246, 0.06);
+  border: 1px solid var(--color-border);
+}
+
+/* ---- Recharts: default styling assumes a light page, override for dark ---- */
+[data-theme="dark"] .recharts-cartesian-axis-tick text {
+  fill: var(--color-muted);
+}
+
+[data-theme="dark"] .recharts-cartesian-grid-horizontal line,
+[data-theme="dark"] .recharts-cartesian-grid-vertical line {
+  stroke: var(--color-border);
+}
+
+[data-theme="dark"] .recharts-default-tooltip {
+  background: rgba(15, 12, 32, 0.95) !important;
+  border: 1px solid var(--color-border) !important;
+  border-radius: 10px !important;
+  color: var(--color-text) !important;
+}
+
+[data-theme="dark"] .recharts-tooltip-label,
+[data-theme="dark"] .recharts-tooltip-item {
+  color: var(--color-text) !important;
+}
+
+/* ---- Auth screen — matches the "Sign in" mockup exactly ---- */
+[data-theme="dark"] .auth-layout {
+  background-color: var(--color-bg);
+  background-image: var(--gradient-bg);
+}
+
+[data-theme="dark"] .auth-visual::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(180deg, rgba(6, 6, 19, 0.15) 0%, rgba(6, 6, 19, 0.92) 100%);
+}
+
+[data-theme="dark"] .auth-visual img {
+  filter: brightness(0.65) saturate(1.1);
+}
+
+[data-theme="dark"] .auth-visual div {
+  position: relative;
+  z-index: 2;
+}
+
+[data-theme="dark"] .auth-visual h1 {
+  background: linear-gradient(135deg, #ffffff 40%, #a78bfa 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+[data-theme="dark"] .auth-card {
+  background: rgba(15, 12, 32, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(139, 92, 246, 0.35);
+  border-radius: 20px;
+  box-shadow: 0 0 50px rgba(109, 40, 217, 0.25), var(--shadow-md);
+}
+
+[data-theme="dark"] .auth-card-header h2 {
+  color: #fff;
+}
+
+[data-theme="dark"] .auth-card .btn-primary {
+  width: 100%;
+}

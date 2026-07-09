@@ -4,7 +4,7 @@ import { storage } from "../utils/storage";
 import { ThemeContext } from "./themeContext";
 
 export function ThemeProvider({ children }) {
-  const [theme, setTheme] = useState(() => storage.get(STORAGE_KEYS.THEME) || "light");
+  const [theme, setTheme] = useState(() => storage.get(STORAGE_KEYS.THEME) || "dark");
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
