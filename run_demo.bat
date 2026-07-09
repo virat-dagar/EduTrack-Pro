@@ -125,7 +125,7 @@ goto wait_loop
 REM ---- Start frontend in its own window ----
 echo.
 echo Starting frontend...
-start "EduTrack Frontend" cmd /k "cd /d "%FRONTEND_DIR%" && set VITE_API_BASE_URL=http://%BACKEND_HOST%:%BACKEND_PORT%/api/v1 && npm run dev -- --host %FRONTEND_HOST% --port %FRONTEND_PORT% --strictPort"
+start "EduTrack Frontend" cmd /k "cd /d "%FRONTEND_DIR%" && set "VITE_API_BASE_URL=http://%BACKEND_HOST%:%BACKEND_PORT%/api/v1" && npm run dev -- --host %FRONTEND_HOST% --port %FRONTEND_PORT% --strictPort"
 
 echo.
 echo EduTrack Pro is running.
