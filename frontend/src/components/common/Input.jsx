@@ -11,10 +11,12 @@ export function Input({ label, error, id, hint, ...props }) {
     {...props}
   />
 
-  {props.type === "password" ? (
-    <Lock className="input-icon" size={18} />
-  ) : (
+ {props.icon === "user" && (
     <User className="input-icon" size={18} />
+  )}
+
+  {props.icon === "lock" && (
+    <Lock className="input-icon" size={18} />
   )}
 </div>
       {hint ? <span className="field-hint">{hint}</span> : null}

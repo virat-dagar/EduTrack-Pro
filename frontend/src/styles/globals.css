@@ -383,6 +383,45 @@ select {
     -webkit-backdrop-filter:blur(12px);
 }
 
+.light .auth-card input{
+
+    background:#ffffff;
+
+    border:1px solid #d7dce5;
+
+    color:#111827;
+}
+
+.light .auth-card input::placeholder{
+
+    color:#6b7280;
+}
+
+/* Light Theme - Input Icons */
+.light .auth-card .input-icon {
+    color: #6B4EFF;
+    stroke-width: 2.2;
+}
+
+.light .auth-card label{
+
+    color:#111827;
+
+    font-weight:600;
+}
+
+.light .auth-card h2{
+
+    color:#111827;
+}
+
+
+
+.light .auth-card p{
+
+    color:#4b5563;
+}
+
 .input-wrapper {
     position: relative;
 }
@@ -596,7 +635,7 @@ select {
   object-fit: cover;
   object-position: center;
   
-  filter: brightness(0.7);
+
 }
 
 .auth-visual div {
@@ -607,22 +646,23 @@ select {
   z-index: 2;
 }
 
-.auth-visual h1 {
+.auth-text h1 {
   margin: 0;
-  font-size: 72px;     
-  font-weight: 650;
   line-height: 1.05;
   letter-spacing: -1px;
   color: #ffffff; 
+  font-size: 4.7rem;
+  font-weight: 800;
+  transition: color 0.3s ease;
 }
 
 .auth-visual p {
   margin-top: 18px;
-  font-size: 22px;
-  font-weight: 400;
   line-height: 1.6;
   color:rgb(255, 255, 255);
-  max-width: 700px;
+  font-size: 1.38rem;
+  transition: color 0.3s ease;
+  margin-bottom: 16px;
 }
 
 .auth-panel {
@@ -666,6 +706,26 @@ select {
     font-weight: 500;
     line-height: 1.6;
     color: rgba(255, 255, 255, 0.75);
+}
+
+/* ===========================
+   Light Theme Login Card
+=========================== */
+
+.auth-text.light + .auth-panel .auth-card,
+.light .auth-card {
+
+    background: rgba(255,255,255,0.95);
+
+    border: 1px solid rgba(0,0,0,0.08);
+
+    border-radius: 28px;
+
+    box-shadow:
+        0 20px 60px rgba(40,40,90,.10),
+        0 5px 18px rgba(0,0,0,.06);
+
+    backdrop-filter: blur(20px);
 }
 
 .blank-layout {
@@ -771,4 +831,22 @@ select {
   .auth-visual h1 {
     font-size: 36px;
   }
+}
+
+/* Dark Theme */
+.auth-text.dark h1 {
+  color: #ffffff;
+}
+
+.auth-text.dark p {
+  color: rgba(255,255,255,0.88);
+}
+
+/* Light Theme */
+.auth-text.light h1 {
+  color: #0F172A;
+}
+
+.auth-text.light p {
+  color: #475569;
 }
