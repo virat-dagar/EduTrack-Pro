@@ -291,9 +291,33 @@ select {
   white-space: nowrap;
 }
 
-.btn-primary {
-  background: var(--color-accent);
-  color: white;
+.btn-primary{
+    margin-top:25px;
+    height:55px;
+    border:none;
+    border-radius:14px;
+    background:
+        linear-gradient(
+            90deg,
+            #7C5CFF 0%,
+            #5B32FF 100%
+        );
+    color:white;
+    font-size:20px;
+    font-weight:600;
+    transition:.35s;
+    box-shadow:
+        0 8px 30px rgba(96,68,255,.28),
+        0 0 18px rgba(110,80,255,.35);
+}
+
+.btn-primary:hover{
+
+    transform:translateY(-2.5px);
+
+    box-shadow:
+        0 14px 35px rgba(110,80,255,.45),
+        0 0 25px rgba(120,90,255,.55);
 }
 
 .btn-secondary {
@@ -339,20 +363,91 @@ select {
 }
 
 .field-label {
-    font-size: 17px;
-    font-weight: 600;
+    font-size: 18px;
+    font-weight: 610;
     margin-bottom: 10px;
-    letter-spacing: .2px;
+    letter-spacing: .3px;
 }
 
-.input {
-  width: 100%;
-  min-height: 42px;
-  padding: 0 12px;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  color: var(--color-text);
-  background: var(--color-surface);
+.input{
+    width:100%;
+    height:60px;
+    padding:0 18px;
+    border-radius:14px;
+    border:1px solid rgba(138,110,255,.45);
+    background:rgba(18,14,48,.42);
+    color:#F5F3FF;
+    font-size:17px;
+    transition:.35s ease;
+    backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
+}
+
+.light .auth-card input{
+
+    background:#ffffff;
+
+    border:1px solid #d7dce5;
+
+    color:#111827;
+}
+
+.light .auth-card input::placeholder{
+
+    color:#6b7280;
+}
+
+/* Light Theme - Input Icons */
+.light .auth-card .input-icon {
+    color: #6B4EFF;
+    stroke-width: 2.2;
+}
+
+.light .auth-card label{
+
+    color:#111827;
+
+    font-weight:600;
+}
+
+.light .auth-card h2{
+
+    color:#111827;
+}
+
+
+
+.light .auth-card p{
+
+    color:#4b5563;
+}
+
+.input-wrapper {
+    position: relative;
+}
+
+.input-icon {
+    position: absolute;
+    right: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    color: rgba(185, 175, 255, .75);
+    pointer-events: none;
+}
+
+.input::placeholder{
+    color:rgba(235,230,255,.45);
+}
+
+.input:focus{
+    outline:none;
+    border-color:#8E6BFF;
+    box-shadow:
+        0 0 0 2px rgba(120,90,255,.15),
+        0 0 22px rgba(120,90,255,.38);
+    background:rgba(22,18,58,.55);
 }
 
 .input-compact {
@@ -540,7 +635,7 @@ select {
   object-fit: cover;
   object-position: center;
   
-  filter: brightness(0.7);
+
 }
 
 .auth-visual div {
@@ -551,22 +646,23 @@ select {
   z-index: 2;
 }
 
-.auth-visual h1 {
+.auth-text h1 {
   margin: 0;
-  font-size: 72px;     
-  font-weight: 650;
   line-height: 1.05;
   letter-spacing: -1px;
   color: #ffffff; 
+  font-size: 4.7rem;
+  font-weight: 800;
+  transition: color 0.3s ease;
 }
 
 .auth-visual p {
   margin-top: 18px;
-  font-size: 22px;
-  font-weight: 400;
   line-height: 1.6;
   color:rgb(255, 255, 255);
-  max-width: 700px;
+  font-size: 1.38rem;
+  transition: color 0.3s ease;
+  margin-bottom: 16px;
 }
 
 .auth-panel {
@@ -584,30 +680,52 @@ select {
 }
 
 .auth-card {
-    width: min(100%, 430px);
-
-    padding: 44px;
-
-    border-radius: 28px;
-
-    background: rgba(12, 10, 35, 0.55);
-
-    backdrop-filter: blur(22px);
-    -webkit-backdrop-filter: blur(22px);
-
-    border: 1px solid rgba(124, 92, 255, 0.45);
-
+       width:min(100%,430px);
+    padding:42px;
+    border-radius:24px;
+    background:rgba(12,10,35,.58);
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+    border:1px solid rgba(132,104,255,.45);
     box-shadow:
-        0 0 20px rgba(110, 70, 255, 0.35),
-        0 0 70px rgba(110, 70, 255, 0.18),
-        inset 0 0 0 1px rgba(255,255,255,0.04);
-
-    color: white;
+        0 0 25px rgba(120,90,255,.32),
+        0 0 70px rgba(120,90,255,.15),
+        inset 0 0 0 1px rgba(255,255,255,.04);
+    color:white;
 }
 
 .auth-card-header h2 {
   margin: 0;
-  font-size: 26px;
+  font-size: 35px;
+}
+
+.auth-card-header p {
+    margin-top: 12px;
+    margin-bottom: 30px;
+    font-size: 17px;     
+    font-weight: 500;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.75);
+}
+
+/* ===========================
+   Light Theme Login Card
+=========================== */
+
+.auth-text.light + .auth-panel .auth-card,
+.light .auth-card {
+
+    background: rgba(255,255,255,0.95);
+
+    border: 1px solid rgba(0,0,0,0.08);
+
+    border-radius: 28px;
+
+    box-shadow:
+        0 20px 60px rgba(40,40,90,.10),
+        0 5px 18px rgba(0,0,0,.06);
+
+    backdrop-filter: blur(20px);
 }
 
 .blank-layout {
@@ -713,4 +831,22 @@ select {
   .auth-visual h1 {
     font-size: 36px;
   }
+}
+
+/* Dark Theme */
+.auth-text.dark h1 {
+  color: #ffffff;
+}
+
+.auth-text.dark p {
+  color: rgba(255,255,255,0.88);
+}
+
+/* Light Theme */
+.auth-text.light h1 {
+  color: #0F172A;
+}
+
+.auth-text.light p {
+  color: #475569;
 }

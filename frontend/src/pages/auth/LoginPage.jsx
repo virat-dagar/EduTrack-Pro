@@ -1,5 +1,5 @@
 import { LogIn } from "lucide-react";
-import { useState } from "react";
+import { useState,} from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Button } from "../../components/common/Button";
@@ -9,6 +9,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { getDashboardPath } from "../../utils/helpers";
 import { validateLogin } from "../../utils/validators";
 
+
 export default function LoginPage() {
   const [values, setValues] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
@@ -16,6 +17,8 @@ export default function LoginPage() {
   const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+
+  
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -43,6 +46,7 @@ export default function LoginPage() {
       <form className="form-stack" onSubmit={handleSubmit}>
         <Input
           label="Email"
+          icon="user"
           name="email"
           type="email"
           autoComplete="email"
@@ -52,6 +56,7 @@ export default function LoginPage() {
         />
         <Input
           label="Password"
+          icon="lock"
           name="password"
           type="password"
           autoComplete="current-password"
