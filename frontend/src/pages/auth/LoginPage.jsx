@@ -11,7 +11,7 @@ import { validateLogin } from "../../utils/validators";
 
 
 export default function LoginPage() {
-  const [values, setValues] = useState({ email: "teacher@example.com", password: "Password123" });
+  const [values, setValues] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { login } = useAuth();
