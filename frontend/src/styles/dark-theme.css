@@ -50,19 +50,33 @@
   font-weight: 800;
 }
 
-[data-theme="dark"] .nav-link {
-  transition: background-color 0.2s ease, color 0.2s ease;
+[data-theme="dark"] .nav-link{
+    transition:
+        background .28s cubic-bezier(.22,1,.36,1),
+        color .25s ease,
+        transform .25s ease,
+        box-shadow .25s ease;
 }
 
-[data-theme="dark"] .nav-link:hover {
-  color: var(--color-text);
-  background: rgba(139, 92, 246, 0.12);
+[data-theme="dark"] .nav-link:hover{
+
+    color:var(--color-text);
+
+    background:rgba(139,92,246,.12);
+
+    transform:translateX(3px);
+
+    box-shadow:
+        inset 0 0 0 1px rgba(139,92,246,.15);
 }
 
-[data-theme="dark"] .nav-link.active {
-  color: #fff;
-  background: var(--gradient-primary);
-  box-shadow: var(--glow-primary);
+[data-theme="dark"] .nav-link.active{
+
+    color:#fff;
+
+    background:var(--gradient-primary);
+
+    box-shadow:var(--glow-primary);
 }
 
 /* ---- Topbar ---- */
@@ -85,9 +99,12 @@
 }
 
 [data-theme="dark"] .card:hover {
-  transform: translateY(-2px);
-  border-color: rgba(139, 92, 246, 0.5);
-  box-shadow: var(--glow-soft), var(--shadow-md);
+  transform: translateY(-6px);
+    border-color:rgba(139,92,246,.50);
+
+    box-shadow:
+        var(--glow-soft),
+        var(--shadow-md);
 }
 
 /* ---- Stat card icon glows, matches the tone-per-metric mockup style ---- */

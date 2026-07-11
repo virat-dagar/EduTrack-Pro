@@ -48,14 +48,23 @@ export function Sidebar() {
         <span>EduTrack Pro</span>
       </div>
       <nav className="nav-list">
-        {items.map((item) => (
-          <NavLink key={item.to} to={item.to} className="nav-link">
+        {items.map((item, index) => (
+  <NavLink
+    key={item.to}
+    to={item.to}
+    className="nav-link"
+    style={{ "--delay": `${index * 45}ms` }}
+  >
             <item.icon size={19} aria-hidden="true" />
             <span>{item.label}</span>
           </NavLink>
         ))}
       </nav>
-      <NavLink to="/settings" className="nav-link nav-link-bottom">
+      <NavLink
+  to="/settings"
+  className="nav-link nav-link-bottom"
+  style={{ "--delay": `${items.length * 45}ms` }}
+>
         <Settings size={19} aria-hidden="true" />
         <span>Settings</span>
       </NavLink>

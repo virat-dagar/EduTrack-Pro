@@ -7,7 +7,7 @@ import { useTheme } from "../../hooks/useTheme";
 
 export function Navbar() {
   const { user, logout } = useAuth();
-  const { toggleSidebar } = useSidebar();
+  const { toggleSidebar, isCollapsed } = useSidebar();
   const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
 
@@ -18,7 +18,14 @@ export function Navbar() {
 
   return (
     <header className="topbar">
-      <Button variant="ghost" size="icon" icon={Menu} onClick={toggleSidebar} aria-label="Toggle sidebar" />
+      <Button
+  className={`menu-btn ${isCollapsed ? "collapsed" : ""}`}
+  variant="ghost"
+  size="icon"
+  icon={Menu}
+  onClick={toggleSidebar}
+  aria-label="Toggle sidebar"
+/>
       <div className="topbar-user">
         <span>{user?.full_name}</span>
         <small>{user?.role}</small>
