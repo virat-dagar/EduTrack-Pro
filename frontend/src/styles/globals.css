@@ -653,6 +653,20 @@ html[data-theme="light"] .nav-link.active svg{
     -webkit-backdrop-filter:blur(12px);
 }
 
+/* ==========================================
+   Global Light Theme Inputs
+========================================== */
+
+html[data-theme="light"] .input{
+
+    background:#ffffff;
+
+    color:#7250b0;
+
+    border:1px solid rgba(138,110,255,.45);
+
+}
+
 .input:hover{
 
     border-color:rgba(142,107,255,.65);
@@ -721,15 +735,8 @@ html[data-theme="light"] .nav-link.active svg{
 
 }
 
-.input::placeholder{
 
-    color:rgba(235,230,255,.52);
-
-    transition:opacity .25s ease;
-
-}
-
-.input:focus::placeholder{
+html[data-theme="light"] .input:focus::placeholder{
 
     opacity:.35;
 
@@ -1439,4 +1446,5 @@ html[data-theme="dark"] .topbar-brand:hover{
     flex-shrink:-2;
 
 }
+
 
