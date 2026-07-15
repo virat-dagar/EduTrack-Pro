@@ -1,4 +1,4 @@
-import { LogOut, Menu, Moon, Sun } from "lucide-react";
+import { GraduationCap, LogOut, Moon, Sun } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../common/Button";
 import { useAuth } from "../../hooks/useAuth";
@@ -18,14 +18,10 @@ export function Navbar() {
 
   return (
     <header className="topbar">
-      <Button
-  className={`menu-btn ${isCollapsed ? "collapsed" : ""}`}
-  variant="ghost"
-  size="icon"
-  icon={Menu}
-  onClick={toggleSidebar}
-  aria-label="Toggle sidebar"
-/>
+        <div className="topbar-brand">
+      <GraduationCap size={28} />
+      <span>EduTrack Pro</span>
+          </div>
       <div className="topbar-user">
         <span>{user?.full_name}</span>
         <small>{user?.role}</small>

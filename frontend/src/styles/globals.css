@@ -286,6 +286,26 @@ select {
 
 }
 
+html[data-theme="light"] .nav-link.active{
+
+    color: var(--color-accent);
+
+    background: rgba(124,92,255,.14);
+
+    border: 1px solid rgba(124,92,255,.22);
+
+    box-shadow:
+        0 4px 16px rgba(124,92,255,.12);
+
+}
+
+html[data-theme="light"] .nav-link.active span,
+html[data-theme="light"] .nav-link.active svg{
+
+    color: var(--color-accent);
+
+}
+
 .nav-link:hover::before,
 .nav-link.active::before{
 
@@ -303,7 +323,7 @@ select {
 
 .dashboard-main {
     min-width: 0;
-
+    flex:1;
     display: flex;
     flex-direction: column;
 
@@ -320,7 +340,7 @@ select {
   align-items: center;
   gap: var(--space-3);
   min-height: 68px;
-  padding:0 24px 0 12px;
+  padding:0 24px;
   background: color-mix(in srgb, var(--color-surface) 92%, transparent);
   border-bottom: 1px solid var(--color-border);
   backdrop-filter: blur(12px);
@@ -346,9 +366,11 @@ select {
 
 .content {
     width: min(1440px, 100%);
-    margin: 0 auto;
-
-    padding: var(--space-4) var(--space-6) var(--space-6);
+    margin-inline: auto;
+    padding-inline: clamp(16px, 3vw, 32px);
+    padding-top: clamp(16px, 2vw, 24px);
+    padding-bottom: clamp(24px, 4vw, 48px);
+    min-width: 0;
 }
 
 .footer {
@@ -357,12 +379,20 @@ select {
   border-top: 1px solid var(--color-border);
 }
 
-.page-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: var(--space-4);
-  margin-bottom: var(--space-5);
+.page-header{
+
+    display:flex;
+
+    align-items:flex-start;
+
+    justify-content:space-between;
+
+    gap:clamp(16px,2vw,32px);
+
+    margin-bottom:clamp(20px,3vw,32px);
+
+    flex-wrap:wrap;
+
 }
 
 .page-header h1 {
@@ -375,13 +405,18 @@ select {
   margin: 6px 0 0;
 }
 
-.page-actions {
-  display: flex;
-  gap: var(--space-3);
+.page-actions{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:12px;
+
 }
 
 .card {
-  padding: var(--space-5);
+  padding:clamp(16px,2vw,24px);
   border: 2px solid var(--color-border);
   border-radius: var(--radius-md);
   background: var(--color-surface);
@@ -1229,3 +1264,179 @@ transition:
     animation:shakeError .35s ease;
 
 }
+
+/* ==========================
+   Responsive Foundation
+========================== */
+
+*{
+    box-sizing:border-box;
+}
+
+img{
+    max-width:100%;
+    height:auto;
+}
+
+table{
+    max-width:100%;
+}
+
+body{
+    overflow-x:hidden;
+}
+
+.topbar-brand{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin-right:auto;
+    font-size:1.5rem;
+    font-weight:800;
+    color:var(--color-text);
+    user-select:none;
+}
+
+.topbar-brand svg{
+    color:var(--color-text);
+    flex-shrink:0;
+}
+
+/* ==========================================
+   Premium Gold Brand - Dark Theme
+========================================== */
+
+html[data-theme="dark"] .topbar-brand{
+
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    font-weight: 800;
+
+    background: linear-gradient(
+        180deg,
+        #FFE9A3 0%,
+        #FFD86A 30%,
+        #F4C542 60%,
+        #C98E14 100%
+    );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    text-shadow:
+        0 0 18px rgba(244,197,66,.12);
+
+}
+
+html[data-theme="dark"] .topbar-brand svg{
+
+    color:#F4C542;
+
+    filter:
+        drop-shadow(0 0 8px rgba(244,197,66,.22));
+
+            text-shadow:
+        0 0 8px rgba(255,221,120,.18),
+        0 0 18px rgba(244,197,66,.12);
+
+} 
+
+html[data-theme="dark"] .topbar-brand:hover{
+
+    filter: brightness(1.2);
+
+    transition: .3s ease;
+
+}
+
+/* ==========================================
+   Sidebar Menu Toggle
+========================================== */
+
+.sidebar-menu-toggle{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    height:48px;
+
+    padding:0 14px;
+
+    cursor:pointer;
+
+    border-radius:14px;
+
+    transition:all .30s cubic-bezier(.22,1,.36,1);
+
+    user-select:none;
+    transform: translateY(3px);
+
+}
+
+.sidebar-menu-toggle span{
+
+    font-weight:700;
+
+    white-space:nowrap;
+
+    transition:
+        opacity .25s ease,
+        transform .30s ease,
+        width .30s ease;
+
+}
+
+.sidebar-menu-toggle.collapsed{
+
+    width:48px;
+    height:48px;
+
+    margin:0 auto;
+
+    display:grid;
+    place-items:center;
+
+    padding:0;
+
+    border-radius:14px;
+
+}
+
+.sidebar-menu-toggle svg{
+
+    display:block;
+
+    margin:0;
+
+    flex-shrink:0;
+
+}
+
+
+.sidebar-menu-toggle.collapsed span{
+
+    width:0;
+
+    opacity:0;
+
+    overflow:hidden;
+
+    transform:translateX(-10px);
+
+    pointer-events:none;
+
+}
+
+
+.sidebar-menu-toggle svg{
+
+    flex-shrink:-2;
+
+}
+

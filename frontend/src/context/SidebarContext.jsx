@@ -5,6 +5,7 @@ import { SidebarContext } from "./sidebarContext";
 
 export function SidebarProvider({ children }) {
   const [isCollapsed, setIsCollapsed] = useState(() => storage.get(STORAGE_KEYS.SIDEBAR) === "true");
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
 
   useEffect(() => {
   document.documentElement.classList.toggle(
@@ -13,19 +14,33 @@ export function SidebarProvider({ children }) {
   );
 }, [isCollapsed]);
 
-  const value = useMemo(
-    () => ({
-      isCollapsed,
-      toggleSidebar: () => {
-        setIsCollapsed((current) => {
-          storage.set(STORAGE_KEYS.SIDEBAR, String(!current));
-          return !current;
-        });
-      },
-      closeSidebar: () => setIsCollapsed(true),
-    }),
-    [isCollapsed],
-  );
+const value = useMemo(
+  () => ({
+    isCollapsed,
+    isMobileOpen,
+
+    toggleSidebar: () => {
+      if (window.innerWidth <= 980) {
+        setIsMobileOpen((open) => !open);
+        return;
+      }
+
+      setIsCollapsed((current) => {
+        storage.set(STORAGE_KEYS.SIDEBAR, String(!current));
+        return !current;
+      });
+    },
+
+    closeSidebar: () => {
+      setIsMobileOpen(false);
+    },
+
+    openSidebar: () => {
+      setIsMobileOpen(true);
+    },
+  }),
+  [isCollapsed, isMobileOpen]
+);
 
   return <SidebarContext.Provider value={value}>{children}</SidebarContext.Provider>;
 }

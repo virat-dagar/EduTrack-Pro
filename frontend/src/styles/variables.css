@@ -27,3 +27,15 @@
   --sidebar-width: 260px;
   color-scheme: light;
 }
+
+/* =========================================
+   Responsive Breakpoints
+========================================= */
+
+:root {
+  --bp-mobile: 576px;
+  --bp-tablet: 768px;
+  --bp-laptop: 992px;
+  --bp-desktop: 1200px;
+  --bp-wide: 1400px;
+}

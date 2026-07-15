@@ -4,13 +4,14 @@ import {
   Building2,
   ClipboardCheck,
   FileText,
-  GraduationCap,
+  Menu,
   LayoutDashboard,
   ListChecks,
   Settings,
   UserRound,
   UsersRound,
 } from "lucide-react";
+import { Button } from "../common/Button";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { useSidebar } from "../../hooks/useSidebar";
@@ -38,15 +39,23 @@ const studentNav = [
 
 export function Sidebar() {
   const { user } = useAuth();
-  const { isCollapsed } = useSidebar();
+  const { isCollapsed, toggleSidebar } = useSidebar();
   const items = user?.role === ROLES.STUDENT ? studentNav : teacherNav;
 
   return (
     <aside className={`sidebar ${isCollapsed ? "sidebar-collapsed" : ""}`} aria-label="Primary navigation">
-      <div className="brand">
-        <GraduationCap size={28} aria-hidden="true" />
-        <span>EduTrack Pro</span>
-      </div>
+<div
+    className={`sidebar-menu-toggle ${
+        isCollapsed ? "collapsed" : ""
+    }`}
+    onClick={toggleSidebar}
+>
+
+    <Menu size={22} />
+
+    <span>Menu</span>
+
+</div>
       <nav className="nav-list">
         {items.map((item, index) => (
   <NavLink
