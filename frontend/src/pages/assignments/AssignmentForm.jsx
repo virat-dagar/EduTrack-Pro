@@ -18,12 +18,12 @@ export default function AssignmentForm() {
     subject_id: "",
     title: "",
     description: "",
-    pdf_file: "",
     total_marks: "",
     assigned_date: todayISO(),
     due_date: todayISO(),
     is_published: true,
   });
+  const [pdfFile, setPdfFile] = useState(null);
   const [questions, setQuestions] = useState([initialQuestion]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const updateValue = (field, value) => setValues((current) => ({ ...current, [field]: value }));
@@ -61,12 +61,17 @@ export default function AssignmentForm() {
     event.preventDefault();
     setIsSubmitting(true);
     try {
+      let pdfFileUrl = null;
+      if (pdfFile) {
+        const uploadResponse = await assignmentService.upload(pdfFile);
+        pdfFileUrl = uploadResponse.data.file_url;
+      }
       await assignmentService.create({
         classroom_id: values.classroom_id ? Number(values.classroom_id) : undefined,
         subject_id: Number(values.subject_id),
         title: values.title,
         description: values.description,
-        pdf_file: values.pdf_file || null,
+        pdf_file: pdfFileUrl,
         total_marks: values.total_marks ? Number(values.total_marks) : undefined,
         assigned_date: values.assigned_date,
         due_date: values.due_date,
@@ -82,7 +87,10 @@ export default function AssignmentForm() {
       toast.success("Assignment created successfully.");
       navigate("/assignments/list");
     } catch (error) {
-      toast.error(error.message || "Unable to save assignment.");
+      const detail = Array.isArray(error.errors) && error.errors.length
+        ? error.errors.map((item) => `${item.field.replace(/^body\./, "")}: ${item.message}`).join(" | ")
+        : null;
+      toast.error(detail || error.message || "Unable to save assignment.");
     } finally {
       setIsSubmitting(false);
     }
@@ -97,7 +105,16 @@ export default function AssignmentForm() {
           <Input label="Subject ID" name="subject_id" type="number" min="1" value={values.subject_id} onChange={(event) => updateValue("subject_id", event.target.value)} required />
           <Input label="Title" name="title" value={values.title} onChange={(event) => updateValue("title", event.target.value)} required />
           <Input label="Description" name="description" value={values.description} onChange={(event) => updateValue("description", event.target.value)} required />
-          <Input label="PDF/File Path" name="pdf_file" value={values.pdf_file} onChange={(event) => updateValue("pdf_file", event.target.value)} />
+          <label className="field" htmlFor="assignment-file">
+            <span className="field-label">Assignment file (optional)</span>
+            <input
+              id="assignment-file"
+              className="input"
+              type="file"
+              accept=".pdf,.doc,.docx,.png,.jpg,.jpeg,.zip"
+              onChange={(event) => setPdfFile(event.target.files?.[0] || null)}
+            />
+          </label>
           <Input label="Fallback Total Marks" name="total_marks" type="number" min="1" step="0.01" value={values.total_marks} onChange={(event) => updateValue("total_marks", event.target.value)} hint={`Question total: ${questionTotal}`} />
           <Input label="Assigned Date" name="assigned_date" type="date" value={values.assigned_date} onChange={(event) => updateValue("assigned_date", event.target.value)} required />
           <Input label="Due Date" name="due_date" type="date" value={values.due_date} onChange={(event) => updateValue("due_date", event.target.value)} required />
