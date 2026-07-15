@@ -1,16 +1,36 @@
 """Assignments router."""
 
-from fastapi import APIRouter, Depends, Query, status
+from fastapi import APIRouter, Depends, File, Query, UploadFile, status
 from sqlalchemy.orm import Session
 
 from app.core.dependencies import get_current_user, require_teacher
 from app.database.session import get_db
 from app.models.user import User
-from app.schemas.assignment import AssignmentCreate, AssignmentResponse, AssignmentUpdate
+from app.schemas.assignment import (
+    AssignmentCreate,
+    AssignmentResponse,
+    AssignmentUpdate,
+)
 from app.services.assignment_service import AssignmentService
 from app.utils.response import pagination_response, success_response
 
 router = APIRouter(prefix="/api/v1/assignments", tags=["Assignments"])
+
+
+@router.post(
+    "/upload", status_code=status.HTTP_201_CREATED, summary="Upload assignment file"
+)
+def upload_assignment_file(
+    file: UploadFile = File(...),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_teacher),
+) -> dict:
+    """Upload a PDF/attachment for an assignment, teacher-only."""
+
+    return success_response(
+        "Assignment file uploaded successfully.",
+        AssignmentService.save_uploaded_file(db, file, current_user),
+    )
 
 
 @router.get("", summary="List assignments")
@@ -50,9 +70,9 @@ def list_assignments(
     )
     data = pagination_response(
         [
-            AssignmentResponse.model_validate(AssignmentService.enrich_for_user(db, item, current_user)).model_dump(
-                mode="json"
-            )
+            AssignmentResponse.model_validate(
+                AssignmentService.enrich_for_user(db, item, current_user)
+            ).model_dump(mode="json")
             for item in items
         ],
         safe_page,
@@ -73,9 +93,9 @@ def upcoming_assignments(
     return success_response(
         "",
         [
-            AssignmentResponse.model_validate(AssignmentService.enrich_for_user(db, item, current_user)).model_dump(
-                mode="json"
-            )
+            AssignmentResponse.model_validate(
+                AssignmentService.enrich_for_user(db, item, current_user)
+            ).model_dump(mode="json")
             for item in items
         ],
     )
@@ -91,7 +111,12 @@ def overdue_assignments(
     items = AssignmentService.overdue(db)
     return success_response(
         "",
-        [AssignmentResponse.model_validate(AssignmentService.enrich(item)).model_dump(mode="json") for item in items],
+        [
+            AssignmentResponse.model_validate(
+                AssignmentService.enrich(item)
+            ).model_dump(mode="json")
+            for item in items
+        ],
     )
 
 
@@ -111,9 +136,9 @@ def subject_assignments(
     )
     data = pagination_response(
         [
-            AssignmentResponse.model_validate(AssignmentService.enrich_for_user(db, item, current_user)).model_dump(
-                mode="json"
-            )
+            AssignmentResponse.model_validate(
+                AssignmentService.enrich_for_user(db, item, current_user)
+            ).model_dump(mode="json")
             for item in items
         ],
         page,
@@ -138,7 +163,12 @@ def teacher_assignments(
         page_size=100,
     )
     data = pagination_response(
-        [AssignmentResponse.model_validate(AssignmentService.enrich(item)).model_dump(mode="json") for item in items],
+        [
+            AssignmentResponse.model_validate(
+                AssignmentService.enrich(item)
+            ).model_dump(mode="json")
+            for item in items
+        ],
         page,
         page_size,
         total_items,
@@ -157,7 +187,9 @@ def create_assignment(
     assignment = AssignmentService.create_assignment(db, payload, current_user.id)
     return success_response(
         "Assignment created successfully.",
-        AssignmentResponse.model_validate(AssignmentService.enrich(assignment)).model_dump(mode="json"),
+        AssignmentResponse.model_validate(
+            AssignmentService.enrich(assignment)
+        ).model_dump(mode="json"),
     )
 
 
@@ -172,9 +204,9 @@ def get_assignment(
     assignment = AssignmentService.get_assignment(db, assignment_id)
     return success_response(
         "",
-        AssignmentResponse.model_validate(AssignmentService.enrich_for_user(db, assignment, current_user)).model_dump(
-            mode="json"
-        ),
+        AssignmentResponse.model_validate(
+            AssignmentService.enrich_for_user(db, assignment, current_user)
+        ).model_dump(mode="json"),
     )
 
 
@@ -189,11 +221,15 @@ def publish_assignment(
     assignment = AssignmentService.publish(db, assignment_id)
     return success_response(
         "Assignment published successfully.",
-        AssignmentResponse.model_validate(AssignmentService.enrich(assignment)).model_dump(mode="json"),
+        AssignmentResponse.model_validate(
+            AssignmentService.enrich(assignment)
+        ).model_dump(mode="json"),
     )
 
 
-@router.get("/{assignment_id}/submissions/summary", summary="Assignment submission summary")
+@router.get(
+    "/{assignment_id}/submissions/summary", summary="Assignment submission summary"
+)
 def assignment_submission_summary(
     assignment_id: int,
     db: Session = Depends(get_db),
@@ -216,7 +252,9 @@ def update_assignment(
     assignment = AssignmentService.update_assignment(db, assignment_id, payload)
     return success_response(
         "Assignment updated successfully.",
-        AssignmentResponse.model_validate(AssignmentService.enrich(assignment)).model_dump(mode="json"),
+        AssignmentResponse.model_validate(
+            AssignmentService.enrich(assignment)
+        ).model_dump(mode="json"),
     )
 
 

@@ -8,6 +8,11 @@ export const assignmentService = {
   get(id) {
     return api.get(`/assignments/${id}`);
   },
+  upload(file) {
+    const formData = new FormData();
+    formData.append("file", file);
+    return api.post("/assignments/upload", formData);
+  },
   create(payload) {
     return api.post("/assignments", payload);
   },
