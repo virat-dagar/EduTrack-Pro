@@ -50,18 +50,30 @@ export default function StudentsList() {
               <Plus size={18} aria-hidden="true" />
               <span>New Student</span>
             </Link>
-            <Link className="btn btn-secondary btn-md" to="/students/import">
+            <Link className="btn btn-primary btn-md" to="/students/import">
               <Upload size={18} aria-hidden="true" />
               <span>Import CSV/Excel</span>
             </Link>
-            <Button variant="secondary" icon={Download} isLoading={isExporting} onClick={handleExport}>Export Students</Button>
+            <button
+    className="btn btn-primary btn-md export-btn"
+    onClick={handleExport}
+>
+    <Download size={18} />
+    <span>Export Students</span>
+</button>
           </>
         }
       />
-      <div className="toolbar">
-        <Input label="Search" name="student-search" placeholder="Name, roll number, department" />
-        <Search size={20} aria-hidden="true" />
-      </div>
+<div className="toolbar">
+    <div className="search-box">
+
+        <Input
+            label="Search"
+            name="student-search"
+            placeholder="Name, roll number, department"
+        />
+    </div>
+</div>
       <DataTable
         rows={rows}
         columns={[

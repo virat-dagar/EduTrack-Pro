@@ -8,8 +8,10 @@ import { PageHeader } from "../../components/layout/PageHeader";
 import { useApi } from "../../hooks/useApi";
 import { dashboardService } from "../../services/dashboardService";
 import { formatPercent } from "../../utils/formatters";
+import { useAuth } from "../../hooks/useAuth";
 
 export default function TeacherDashboard() {
+  const { user } = useAuth();
   const summary = useApi(() => dashboardService.teacher(), []);
   const charts = useApi(() => dashboardService.teacherCharts(), []);
   const activity = useApi(() => dashboardService.teacherActivity(), []);
@@ -23,7 +25,7 @@ export default function TeacherDashboard() {
 
   return (
     <>
-      <PageHeader title="Teacher Dashboard" description="Institution-wide academic overview." />
+      <PageHeader title={`👋 Hii, ${user?.full_name?.split(" ")[0] || "Teacher"}!`} description="Institution-wide academic overview."/>
       <section className="stat-grid">
         <StatCard title="Students" value={data.total_students} icon={UsersRound} tone="blue" />
         <StatCard title="Subjects" value={data.total_subjects} icon={BookOpen} tone="green" />

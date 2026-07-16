@@ -58,20 +58,23 @@ export function Sidebar() {
 </div>
       <nav className="nav-list">
         {items.map((item, index) => (
-  <NavLink
+<NavLink
     key={item.to}
     to={item.to}
     className="nav-link"
+    data-tooltip={item.label}
     style={{ "--delay": `${index * 45}ms` }}
-  >
+>
+  
             <item.icon size={19} aria-hidden="true" />
             <span>{item.label}</span>
           </NavLink>
         ))}
       </nav>
-      <NavLink
-  to="/settings"
-  className="nav-link nav-link-bottom"
+<NavLink
+    to="/settings"
+    className="nav-link nav-link-bottom"
+    data-tooltip="Settings"
   style={{ "--delay": `${items.length * 45}ms` }}
 >
         <Settings size={19} aria-hidden="true" />
