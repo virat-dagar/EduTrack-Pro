@@ -553,9 +553,7 @@ html[data-theme="light"] .nav-link.active svg{
 }
 
 .btn-primary:hover{
-
     transform:translateY(-2.5px);
-
     box-shadow:
         0 14px 35px rgba(110,80,255,.45),
         0 0 25px rgba(120,90,255,.55);
@@ -1072,7 +1070,7 @@ html[data-theme="light"] .input:focus::placeholder{
 .settings-card,
 .profile-highlight {
   display: flex;
-  align-items: end;
+  align-items: center;
   gap: var(--space-4);
   margin-bottom: var(--space-5);
 }
@@ -1272,42 +1270,7 @@ transition:
 
 }
 
-/* ==========================
-   Responsive Foundation
-========================== */
 
-*{
-    box-sizing:border-box;
-}
-
-img{
-    max-width:100%;
-    height:auto;
-}
-
-table{
-    max-width:100%;
-}
-
-body{
-    overflow-x:hidden;
-}
-
-.topbar-brand{
-    display:flex;
-    align-items:center;
-    gap:14px;
-    margin-right:auto;
-    font-size:1.5rem;
-    font-weight:800;
-    color:var(--color-text);
-    user-select:none;
-}
-
-.topbar-brand svg{
-    color:var(--color-text);
-    flex-shrink:0;
-}
 
 /* ==========================================
    Premium Gold Brand - Dark Theme
@@ -1318,6 +1281,7 @@ html[data-theme="dark"] .topbar-brand{
     display: flex;
     align-items: center;
     gap: 14px;
+    font-size:26px;
 
     font-weight: 800;
 
@@ -1443,8 +1407,228 @@ html[data-theme="dark"] .topbar-brand:hover{
 
 .sidebar-menu-toggle svg{
 
-    flex-shrink:-2;
+    flex-shrink:0;
+
+}
+
+.export-btn:hover{
+
+    color: #0D47C2;
 
 }
 
 
+html[data-theme="light"] .topbar-brand span{
+
+    font-size:26px;
+
+    font-weight:800;
+
+    letter-spacing:-0.6px;
+
+    color:#111827;
+    align-items:center;
+    position:relative;
+top:-5px;
+margin-left:16px;
+
+}
+
+html[data-theme="light"] .topbar-brand svg{
+
+    color:#111827;
+    position:relative;
+top:3px;
+
+}
+
+/* ===================================================
+   Premium Sidebar Tooltip
+=================================================== */
+
+.sidebar.sidebar-collapsed .nav-link{
+
+    position:relative;
+
+    overflow:visible;
+
+}
+
+.sidebar.sidebar-collapsed .nav-link::after{
+
+    content:attr(data-tooltip);
+
+    position:absolute;
+
+    left:78px;
+
+    top:50%;
+
+    transform:
+        translateY(-50%)
+        translateX(-8px)
+        scale(.96);
+
+    padding:10px 14px;
+
+    border-radius:12px;
+
+    background:rgba(18,18,28,.78);
+
+    backdrop-filter:blur(18px);
+
+    -webkit-backdrop-filter:blur(18px);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    color:#fff;
+
+    font-size:13px;
+
+    font-weight:700;
+
+    letter-spacing:.2px;
+
+    white-space:nowrap;
+
+    opacity:0;
+
+    visibility:hidden;
+
+    pointer-events:none;
+
+    box-shadow:
+        0 14px 40px rgba(0,0,0,.28);
+
+    transition:
+        opacity .22s ease,
+        transform .22s cubic-bezier(.22,1,.36,1);
+
+    z-index:9999;
+
+}
+
+.sidebar.sidebar-collapsed .nav-link::before{
+
+    content:"";
+
+    position:absolute;
+
+    left:66px;
+
+    top:50%;
+
+    width:10px;
+
+    height:10px;
+
+    background:rgba(18,18,28,.78);
+
+    border-left:1px solid rgba(255,255,255,.08);
+
+    border-top:1px solid rgba(255,255,255,.08);
+
+    backdrop-filter:blur(18px);
+
+    transform:
+        translateY(-50%)
+        rotate(-45deg);
+
+    opacity:0;
+
+    visibility:hidden;
+
+    transition:
+        opacity .22s ease,
+        transform .22s cubic-bezier(.22,1,.36,1);
+
+    z-index:9998;
+
+}
+
+.sidebar.sidebar-collapsed .nav-link:hover::after,
+
+.sidebar.sidebar-collapsed .nav-link:hover::before{
+
+    opacity:1;
+
+    visibility:visible;
+
+}
+
+.sidebar.sidebar-collapsed .nav-link:hover::after{
+
+    transform:
+        translateY(-50%)
+        translateX(0)
+        scale(1);
+
+}
+
+.sidebar.sidebar-collapsed .nav-link:hover::after{
+
+    opacity:1;
+
+    visibility:visible;
+
+    transform:translateY(-50%) translateX(0);
+
+}
+
+html[data-theme="light"] .sidebar.sidebar-collapsed .nav-link::after{
+
+    background:rgba(255,255,255,.88);
+
+    color:#111827;
+
+    border:1px solid rgba(0,0,0,.08);
+
+    box-shadow:
+        0 14px 40px rgba(0,0,0,.12);
+
+}
+
+html[data-theme="light"] .sidebar.sidebar-collapsed .nav-link::before{
+
+    background:rgba(255,255,255,.88);
+
+    border-left:1px solid rgba(0,0,0,.08);
+
+    border-top:1px solid rgba(0,0,0,.08);
+
+}
+
+.sidebar.sidebar-collapsed .nav-link:hover{
+
+    transform:translateX(2px);
+
+}
+
+.sidebar.sidebar-collapsed .nav-link:hover svg{
+
+    transform:
+        translateY(12.5px)
+        scale(1.08);
+
+    transition:
+        transform .22s cubic-bezier(.22,1,.36,1);
+
+}
+
+.search-box{
+    position: relative;
+    width: 320px;
+
+}
+
+.search-icon{
+    position: absolute;
+
+    left: 16px;
+
+    top: 58px;   /* We'll fine tune this */
+
+    color: var(--color-text-muted);
+
+    pointer-events: none;
+}

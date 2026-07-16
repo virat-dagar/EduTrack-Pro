@@ -19,7 +19,7 @@ export function Navbar() {
   return (
     <header className="topbar">
         <div className="topbar-brand">
-      <GraduationCap size={28} />
+      <GraduationCap size={38} />
       <span>EduTrack Pro</span>
           </div>
       <div className="topbar-user">

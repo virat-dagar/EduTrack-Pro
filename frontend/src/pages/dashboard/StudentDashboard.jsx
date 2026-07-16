@@ -9,8 +9,10 @@ import { Badge } from "../../components/ui/Badge";
 import { useApi } from "../../hooks/useApi";
 import { dashboardService } from "../../services/dashboardService";
 import { formatPercent } from "../../utils/formatters";
+import { useAuth } from "../../hooks/useAuth";
 
 export default function StudentDashboard() {
+  const { user } = useAuth();
   const summary = useApi(() => dashboardService.student(), []);
   const charts = useApi(() => dashboardService.studentCharts(), []);
 
@@ -22,7 +24,7 @@ export default function StudentDashboard() {
 
   return (
     <>
-      <PageHeader title="Student Dashboard" description="Your academic progress at a glance." />
+      <PageHeader title={`👋 Hii, ${user?.full_name?.split(" ")[0] || "Student"}!`} description="Your academic progress at a glance."/>
       <section className="stat-grid">
         <StatCard title="Attendance" value={formatPercent(data.attendance_percentage)} icon={ClipboardCheck} tone="teal" />
         <StatCard title="Average Marks" value={formatPercent(data.average_marks)} icon={Star} tone="amber" />
